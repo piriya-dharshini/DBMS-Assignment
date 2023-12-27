@@ -1,0 +1,404 @@
+SQL> @D:\sem-3\sql\ex7.sql
+SQL> REM:dropping tables
+SQL> 
+SQL> drop table customer cascade constraints;
+
+Table dropped.
+
+SQL> drop table pizza cascade constraints;
+
+Table dropped.
+
+SQL> drop table orders cascade constraints;
+
+Table dropped.
+
+SQL> drop table order_list cascade constraints;
+
+Table dropped.
+
+SQL> 
+SQL> REM:Creating table customer,pizza
+SQL> REM:order,order_list
+SQL> 
+SQL> CREATE TABLE customer(
+  2  	     cust_id varchar(4) PRIMARY KEY,
+  3  	     cust_name varchar(40),
+  4  	     address varchar(200),
+  5  	     phone number(10)
+  6  	     );
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE pizza(
+  2  	     pizza_id varchar(4) PRIMARY KEY,
+  3  	     pizza_type varchar(40),
+  4  	     unit_price number(3)
+  5  	     );
+
+Table created.
+
+SQL> CREATE TABLE orders(
+  2  	     order_no varchar(5) PRIMARY KEY,
+  3  	     FK_cust_id varchar(4),
+  4  	     FOREIGN KEY(FK_cust_id) REFERENCES customer(cust_id),
+  5  	     order_date date,
+  6  	     delv_date date,
+  7  	     tot_amt int
+  8  	     );
+
+Table created.
+
+SQL> CREATE TABLE order_list(
+  2  	     FK_order_no varchar(5),
+  3  	     FOREIGN KEY(FK_order_no) REFERENCES orders(order_no),
+  4  	     pizza_id varchar(4),
+  5  	     PRIMARY KEY(FK_order_no,pizza_id),
+  6  	     qty number NOT NULL
+  7  	     );
+
+Table created.
+
+SQL> 
+SQL> REm customer(cust_id, cust_name, address, phone)
+SQL> REM pizza (pizza_id, pizza_type, unit_price)
+SQL> REM orders(order_no, cust_id, order_date ,delv_date, total_amt)
+SQL> REM order_list(order_no, pizza_id, qty)
+SQL> 
+SQL> 
+SQL> REM ------------------------------------------------------------------------------------------
+> 
+SQL> REM customer(cust_id, cust_name,address,phone)
+SQL> 
+SQL> insert into customer values('c001','Hari','32 RING ROAD,ALWARPET',9001200031);
+
+1 row created.
+
+SQL> insert into customer values('c002','Prasanth','42 bull ROAD,numgambakkam',9444120003);
+
+1 row created.
+
+SQL> insert into customer values('c003','Neethu','12a RING ROAD,ALWARPET',9840112003);
+
+1 row created.
+
+SQL> insert into customer values('c004','Jim','P.H ROAD,Annanagar',9845712993);
+
+1 row created.
+
+SQL> insert into customer values('c005','Sindhu','100 feet ROAD,vadapalani',9840166677);
+
+1 row created.
+
+SQL> insert into customer values('c006','Brinda','GST ROAD, TAMBARAM', 9876543210);
+
+1 row created.
+
+SQL> insert into customer values('c007','Ramkumar','2nd cross street, Perambur',8566944453);
+
+1 row created.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> REM pizza (pizza_id, pizza_type, unit_price)
+SQL> 
+SQL> insert into pizza values('p001','pan',130);
+
+1 row created.
+
+SQL> insert into pizza values('p002','grilled',230);
+
+1 row created.
+
+SQL> insert into pizza values('p003','italian',200);
+
+1 row created.
+
+SQL> insert into pizza values('p004','spanish',260);
+
+1 row created.
+
+SQL> insert into pizza values('p005','supremo',250);
+
+1 row created.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> REM orders(order_no, cust_id, order_date ,delv_date)
+SQL> 
+SQL> insert into orders values('OP100','c001','28-JUN-2015','28-JUN-2015',0);
+
+1 row created.
+
+SQL> insert into orders values('OP200','c002','28-JUN-2015','29-JUN-2015',0);
+
+1 row created.
+
+SQL> 
+SQL> insert into orders values('OP300','c003','29-JUN-2015','29-JUN-2015',0);
+
+1 row created.
+
+SQL> insert into orders values('OP400','c004','29-JUN-2015','29-JUN-2015',0);
+
+1 row created.
+
+SQL> insert into orders values('OP500','c001','29-JUN-2015','30-JUN-2015',0);
+
+1 row created.
+
+SQL> insert into orders values('OP600','c002','29-JUN-2015','29-JUN-2015',0);
+
+1 row created.
+
+SQL> 
+SQL> insert into orders values('OP700','c005','30-JUN-2015','30-JUN-2015',0);
+
+1 row created.
+
+SQL> insert into orders values('OP800','c006','30-JUN-2015','30-JUN-2015',0);
+
+1 row created.
+
+SQL> 
+SQL> 
+SQL> REM order_list(order_no, pizza_id, qty)
+SQL> 
+SQL> insert into order_list values('OP100','p001',3);
+
+1 row created.
+
+SQL> insert into order_list values('OP100','p002',2);
+
+1 row created.
+
+SQL> insert into order_list values('OP100','p003',2);
+
+1 row created.
+
+SQL> insert into order_list values('OP100','p004',5);
+
+1 row created.
+
+SQL> insert into order_list values('OP100','p005',4);
+
+1 row created.
+
+SQL> 
+SQL> insert into order_list values('OP200','p003',2);
+
+1 row created.
+
+SQL> insert into order_list values('OP200','p001',6);
+
+1 row created.
+
+SQL> insert into order_list values('OP200','p004',8);
+
+1 row created.
+
+SQL> 
+SQL> insert into order_list values('OP300','p003',3);
+
+1 row created.
+
+SQL> 
+SQL> insert into order_list values('OP400','p001',3);
+
+1 row created.
+
+SQL> insert into order_list values('OP400','p004',1);
+
+1 row created.
+
+SQL> 
+SQL> insert into order_list values('OP500','p003',6);
+
+1 row created.
+
+SQL> insert into order_list values('OP500','p004',5);
+
+1 row created.
+
+SQL> insert into order_list values('OP500','p001',null);
+insert into order_list values('OP500','p001',null)
+                                             *
+ERROR at line 1:
+ORA-01400: cannot insert NULL into ("SCOTT"."ORDER_LIST"."QTY") 
+
+
+SQL> 
+SQL> insert into order_list values('OP600','p002',3);
+
+1 row created.
+
+SQL> insert into order_list values('OP600','p003',2);
+
+1 row created.
+
+SQL> 
+SQL> REM:Using stored procedures to calculate the total amount in orders table
+SQL> 
+SQL> CREATE OR REPLACE PROCEDURE add_tamt
+  2  IS
+  3  BEGIN
+  4    FOR i IN (SELECT order_no FROM orders) LOOP
+  5  	 UPDATE orders
+  6  	     SET tot_amt=(SELECT SUM(unit_price*qty) FROM
+  7  			  order_list ol
+  8  			  JOIN pizza p
+  9  			  ON ol.pizza_id=p.pizza_id
+ 10  			  GROUP BY ol.FK_order_no
+ 11  			  HAVING FK_order_no=i.order_no)
+ 12  	     WHERE order_no=i.order_no;
+ 13    END LOOP;
+ 14  END;
+ 15  /
+
+Procedure created.
+
+SQL> 
+SQL> BEGIN
+  2    add_tamt;
+  3  END;
+  4  /
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> REM:1 Ensure that the pizza can be delivered on same day or on the next day
+SQL> REM:only.
+SQL> 
+SQL> 
+SQL> CREATE OR REPLACE TRIGGER check_delivery_date
+  2  BEFORE INSERT OR UPDATE ON orders
+  3  FOR EACH ROW
+  4  BEGIN
+  5    IF :NEW.delv_date NOT IN (:NEW.order_date, :NEW.order_date + 1) THEN
+  6  	 RAISE_APPLICATION_ERROR(-20001, 'Delivery date must be the same day or the next day.');
+  7    END IF;
+  8  END;
+  9  /
+
+Trigger created.
+
+SQL> 
+SQL> INSERT INTO orders (order_no, FK_cust_id, order_date, delv_date, tot_amt)
+  2  VALUES ('OP900', 'c001', SYSDATE, SYSDATE + 2, 0);
+INSERT INTO orders (order_no, FK_cust_id, order_date, delv_date, tot_amt)
+            *
+ERROR at line 1:
+ORA-20001: Delivery date must be the same day or the next day. 
+ORA-06512: at "SCOTT.CHECK_DELIVERY_DATE", line 3 
+ORA-04088: error during execution of trigger 'SCOTT.CHECK_DELIVERY_DATE' 
+
+
+SQL> 
+SQL> REM:2. Update the total_amt in ORDERS while entering an order in
+SQL> REM:ORDER_LIST.
+SQL> 
+SQL> CREATE OR REPLACE TRIGGER update_total_amt_row
+  2  BEFORE INSERT ON order_list
+  3  FOR EACH ROW
+  4  BEGIN
+  5    UPDATE orders o
+  6    SET tot_amt = (
+  7  	 SELECT SUM(p.unit_price * :NEW.qty)
+  8  	 FROM pizza p
+  9  	 JOIN order_list ol ON p.pizza_id = ol.pizza_id
+ 10  	 WHERE ol.FK_order_no = :NEW.FK_order_no
+ 11    )
+ 12    WHERE order_no = :NEW.FK_order_no;
+ 13  END;
+ 14  /
+
+Trigger created.
+
+SQL> INSERT INTO order_list
+  2  VALUES ('OP400', 'p003', 3);
+
+1 row created.
+
+SQL> 
+SQL> 
+SQL> SELECT * FROM orders WHERE order_no = 'OP400';
+
+ORDER FK_C ORDER_DAT DELV_DATE    TOT_AMT                                       
+----- ---- --------- --------- ----------                                       
+OP400 c004 29-JUN-15 29-JUN-15       1170                                       
+
+SQL> 
+SQL> 
+SQL> 
+SQL> REM:3 To give preference to all customers in delivery of pizzas’, a threshold is
+SQL> REM:set on the number of orders per day per customer. Ensure that a
+SQL> REM:customer can not place more than 5 orders per day.
+SQL> 
+SQL> CREATE OR REPLACE TRIGGER check_order_limit
+  2  BEFORE INSERT ON orders
+  3  FOR EACH ROW
+  4  DECLARE
+  5    v_order_count NUMBER;
+  6  BEGIN
+  7    SELECT COUNT(*) INTO v_order_count
+  8    FROM orders
+  9    WHERE FK_cust_id = :NEW.FK_cust_id
+ 10  	 AND TRUNC(order_date) = TRUNC(SYSDATE);
+ 11  
+ 12    IF v_order_count >= 5 THEN
+ 13  	 RAISE_APPLICATION_ERROR(-20002, 'Customer cannot place more than 5 orders per day.');
+ 14    END IF;
+ 15  END;
+ 16  /
+
+Trigger created.
+
+SQL> 
+SQL> INSERT INTO orders (order_no, FK_cust_id, order_date, delv_date, tot_amt)
+  2  VALUES ('OP901', 'c001', SYSDATE, SYSDATE + 1, 0);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO orders (order_no, FK_cust_id, order_date, delv_date, tot_amt)
+  2  VALUES ('OP902', 'c001', SYSDATE, SYSDATE + 1, 0);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO orders (order_no, FK_cust_id, order_date, delv_date, tot_amt)
+  2  VALUES ('OP903', 'c001', SYSDATE, SYSDATE + 1, 0);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO orders (order_no, FK_cust_id, order_date, delv_date, tot_amt)
+  2  VALUES ('OP904', 'c001', SYSDATE, SYSDATE + 1, 0);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO orders (order_no, FK_cust_id, order_date, delv_date, tot_amt)
+  2  VALUES ('OP905', 'c001', SYSDATE, SYSDATE + 1, 0);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO orders (order_no, FK_cust_id, order_date, delv_date, tot_amt)
+  2  VALUES ('OP906', 'c001', SYSDATE, SYSDATE + 1, 0);
+INSERT INTO orders (order_no, FK_cust_id, order_date, delv_date, tot_amt)
+            *
+ERROR at line 1:
+ORA-20002: Customer cannot place more than 5 orders per day. 
+ORA-06512: at "SCOTT.CHECK_ORDER_LIMIT", line 10 
+ORA-04088: error during execution of trigger 'SCOTT.CHECK_ORDER_LIMIT' 
+
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> spool off;

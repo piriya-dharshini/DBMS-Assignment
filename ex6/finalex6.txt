@@ -1,0 +1,517 @@
+SQL> @"D:\sem-3\sql\ex6.sql"
+SQL> REM:dropping tables
+SQL> 
+SQL> drop table customer cascade constraints;
+
+Table dropped.
+
+SQL> drop table pizza cascade constraints;
+
+Table dropped.
+
+SQL> drop table orders cascade constraints;
+
+Table dropped.
+
+SQL> drop table order_list cascade constraints;
+
+Table dropped.
+
+SQL> 
+SQL> REM:Creating table customer,pizza
+SQL> REM:order,order_list
+SQL> 
+SQL> CREATE TABLE customer(
+  2  	     cust_id varchar(4) PRIMARY KEY,
+  3  	     cust_name varchar(40),
+  4  	     address varchar(200),
+  5  	     phone number(10)
+  6  	     );
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE pizza(
+  2  	     pizza_id varchar(4) PRIMARY KEY,
+  3  	     pizza_type varchar(40),
+  4  	     unit_price number(3)
+  5  	     );
+
+Table created.
+
+SQL> CREATE TABLE orders(
+  2  	     order_no varchar(5) PRIMARY KEY,
+  3  	     FK_cust_id varchar(4),
+  4  	     FOREIGN KEY(FK_cust_id) REFERENCES customer(cust_id),
+  5  	     order_date date,
+  6  	     delv_date date,
+  7  	     tot_amt int
+  8  	     );
+
+Table created.
+
+SQL> CREATE TABLE order_list(
+  2  	     FK_order_no varchar(5),
+  3  	     FOREIGN KEY(FK_order_no) REFERENCES orders(order_no),
+  4  	     pizza_id varchar(4),
+  5  	     PRIMARY KEY(FK_order_no,pizza_id),
+  6  	     qty number NOT NULL
+  7  	     );
+
+Table created.
+
+SQL> 
+SQL> REm customer(cust_id, cust_name, address, phone)
+SQL> REM pizza (pizza_id, pizza_type, unit_price)
+SQL> REM orders(order_no, cust_id, order_date ,delv_date, total_amt)
+SQL> REM order_list(order_no, pizza_id, qty)
+SQL> 
+SQL> 
+SQL> REM ------------------------------------------------------------------------------------------
+> 
+SQL> REM customer(cust_id, cust_name,address,phone)
+SQL> 
+SQL> insert into customer values('c001','Hari','32 RING ROAD,ALWARPET',9001200031);
+
+1 row created.
+
+SQL> insert into customer values('c002','Prasanth','42 bull ROAD,numgambakkam',9444120003);
+
+1 row created.
+
+SQL> insert into customer values('c003','Neethu','12a RING ROAD,ALWARPET',9840112003);
+
+1 row created.
+
+SQL> insert into customer values('c004','Jim','P.H ROAD,Annanagar',9845712993);
+
+1 row created.
+
+SQL> insert into customer values('c005','Sindhu','100 feet ROAD,vadapalani',9840166677);
+
+1 row created.
+
+SQL> insert into customer values('c006','Brinda','GST ROAD, TAMBARAM', 9876543210);
+
+1 row created.
+
+SQL> insert into customer values('c007','Ramkumar','2nd cross street, Perambur',8566944453);
+
+1 row created.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> REM pizza (pizza_id, pizza_type, unit_price)
+SQL> 
+SQL> insert into pizza values('p001','pan',130);
+
+1 row created.
+
+SQL> insert into pizza values('p002','grilled',230);
+
+1 row created.
+
+SQL> insert into pizza values('p003','italian',200);
+
+1 row created.
+
+SQL> insert into pizza values('p004','spanish',260);
+
+1 row created.
+
+SQL> insert into pizza values('p005','supremo',250);
+
+1 row created.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> REM orders(order_no, cust_id, order_date ,delv_date)
+SQL> 
+SQL> insert into orders values('OP100','c001','28-JUN-2015','28-JUN-2015',0);
+
+1 row created.
+
+SQL> insert into orders values('OP200','c002','28-JUN-2015','29-JUN-2015',0);
+
+1 row created.
+
+SQL> 
+SQL> insert into orders values('OP300','c003','29-JUN-2015','29-JUN-2015',0);
+
+1 row created.
+
+SQL> insert into orders values('OP400','c004','29-JUN-2015','29-JUN-2015',0);
+
+1 row created.
+
+SQL> insert into orders values('OP500','c001','29-JUN-2015','30-JUN-2015',0);
+
+1 row created.
+
+SQL> insert into orders values('OP600','c002','29-JUN-2015','29-JUN-2015',0);
+
+1 row created.
+
+SQL> 
+SQL> insert into orders values('OP700','c005','30-JUN-2015','30-JUN-2015',0);
+
+1 row created.
+
+SQL> insert into orders values('OP800','c006','30-JUN-2015','30-JUN-2015',0);
+
+1 row created.
+
+SQL> 
+SQL> 
+SQL> REM order_list(order_no, pizza_id, qty)
+SQL> 
+SQL> insert into order_list values('OP100','p001',3);
+
+1 row created.
+
+SQL> insert into order_list values('OP100','p002',2);
+
+1 row created.
+
+SQL> insert into order_list values('OP100','p003',2);
+
+1 row created.
+
+SQL> insert into order_list values('OP100','p004',5);
+
+1 row created.
+
+SQL> insert into order_list values('OP100','p005',4);
+
+1 row created.
+
+SQL> 
+SQL> insert into order_list values('OP200','p003',2);
+
+1 row created.
+
+SQL> insert into order_list values('OP200','p001',6);
+
+1 row created.
+
+SQL> insert into order_list values('OP200','p004',8);
+
+1 row created.
+
+SQL> 
+SQL> insert into order_list values('OP300','p003',3);
+
+1 row created.
+
+SQL> 
+SQL> insert into order_list values('OP400','p001',3);
+
+1 row created.
+
+SQL> insert into order_list values('OP400','p004',1);
+
+1 row created.
+
+SQL> 
+SQL> insert into order_list values('OP500','p003',6);
+
+1 row created.
+
+SQL> insert into order_list values('OP500','p004',5);
+
+1 row created.
+
+SQL> insert into order_list values('OP500','p001',null);
+insert into order_list values('OP500','p001',null)
+                                             *
+ERROR at line 1:
+ORA-01400: cannot insert NULL into ("SCOTT"."ORDER_LIST"."QTY") 
+
+
+SQL> 
+SQL> insert into order_list values('OP600','p002',3);
+
+1 row created.
+
+SQL> insert into order_list values('OP600','p003',2);
+
+1 row created.
+
+SQL> 
+SQL> REM:Using stored procedures to calculate the total amount in orders table
+SQL> 
+SQL> CREATE OR REPLACE PROCEDURE add_tamt
+  2  IS
+  3  BEGIN
+  4    FOR i IN (SELECT order_no FROM orders) LOOP
+  5  	 UPDATE orders
+  6  	     SET tot_amt=(SELECT SUM(unit_price*qty) FROM
+  7  			  order_list ol
+  8  			  JOIN pizza p
+  9  			  ON ol.pizza_id=p.pizza_id
+ 10  			  GROUP BY ol.FK_order_no
+ 11  			  HAVING FK_order_no=i.order_no)
+ 12  	     WHERE order_no=i.order_no;
+ 13    END LOOP;
+ 14  END;
+ 15  /
+
+Procedure created.
+
+SQL> 
+SQL> BEGIN
+  2    add_tamt;
+  3  END;
+  4  /
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> REM:1 Write a stored procedure to display the total number of pizza's ordered by
+SQL> REM:the given order number. (Use IN, OUT)
+SQL> CREATE OR REPLACE PROCEDURE tot_pizza
+  2  (o_no IN order_list.FK_order_no%TYPE,
+  3   tp_no OUT NUMBER)
+  4  IS
+  5  BEGIN
+  6  		SELECT SUM(qty)
+  7  		INTO tp_no
+  8  		FROM order_list
+  9  		GROUP BY FK_order_no
+ 10  		HAVING FK_order_no=o_no;
+ 11  END;
+ 12  /
+
+Procedure created.
+
+SQL> 
+SQL> DECLARE
+  2  	     o_no order_list.FK_order_no%TYPE;
+  3  	     cp_tp_no number;
+  4  BEGIN
+  5  	     o_no:='&order_no';
+  6  	     tot_pizza(o_no,cp_tp_no);
+  7  	     dbms_output.put_line('TOTAL PIZZA AMOUNT'||' '||cp_tp_no);
+  8  
+  9  END;
+ 10  /
+Enter value for order_no: OP100
+old   5: 	o_no:='&order_no';
+new   5: 	o_no:='OP100';
+TOTAL PIZZA AMOUNT 16                                                           
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> REM:2For the given order number, calculate the Discount as follows:
+SQL> REM:For total amount > 2000 and total amount < 5000: Discount=5%
+SQL> REM:For total amount > 5000 and total amount < 10000: Discount=10%
+SQL> REM:For total amount > 10000: Discount=20%
+SQL> REM:Calculate the total amount (after the discount) and update the same in
+SQL> REM:orders table. Print the order as shown below:
+SQL> REM:************************************************************
+SQL> REM:Order Number:OP104 Customer Name: Hari
+SQL> REM:Order Date :29-Jun-2015 Phone: 9001200031
+SQL> REM:************************************************************
+SQL> REM:SNo Pizza Type Qty Price Amount
+SQL> REM:1. Italian 6 200 1200
+SQL> REM:2. Spanish 5 260 1300
+SQL> REM:------------------------------------------------------
+> REM:Total = 11 2500
+SQL> REM:------------------------------------------------------
+> REM:Total Amount :Rs.2500
+SQL> REM:Discount (5%) :Rs. 125
+SQL> REM:-------------------------- ----
+> REM:Amount to be paid :Rs.2375
+SQL> REM:-------------------------- ----
+> REM:Great Offers! Discount up to 25% on DIWALI Festival Day...
+SQL> 
+SQL> 
+SQL> CREATE OR REPLACE PROCEDURE calc_discount(o_no IN orders.order_no%TYPE) IS
+  2    CURSOR c_orders IS
+  3  	 SELECT o.order_no, o.FK_cust_id, c.cust_name, o.tot_amt, o.order_date, c.phone
+  4  	 FROM orders o
+  5  	 JOIN order_list ord ON o.order_no = ord.FK_order_no
+  6  	 JOIN pizza p ON ord.pizza_id = p.pizza_id
+  7  	 JOIN customer c ON o.FK_cust_id = c.cust_id
+  8  	 WHERE o.order_no = o_no;
+  9  
+ 10    tot_discount NUMBER;
+ 11    final_amt NUMBER;
+ 12    ct NUMBER := 0;
+ 13    v_order_no orders.order_no%TYPE;
+ 14    v_cust_id customer.cust_id%TYPE;
+ 15    v_cust_name customer.cust_name%TYPE;
+ 16    v_total_amount orders.tot_amt%TYPE;
+ 17    v_order_date orders.order_date%TYPE;
+ 18    v_phone customer.phone%TYPE;
+ 19  BEGIN
+ 20    OPEN c_orders;
+ 21    FETCH c_orders INTO v_order_no, v_cust_id, v_cust_name, v_total_amount, v_order_date, v_phone;
+ 22    CLOSE c_orders;
+ 23  
+ 24    IF v_total_amount > 2000 AND v_total_amount < 5000 THEN
+ 25  	 tot_discount := v_total_amount * 0.05;
+ 26  	 final_amt := v_total_amount + tot_discount;
+ 27    ELSIF v_total_amount >= 5000 AND v_total_amount < 10000 THEN
+ 28  	 tot_discount := v_total_amount * 0.1;
+ 29  	 final_amt := v_total_amount + tot_discount;
+ 30    ELSE
+ 31  	 tot_discount := v_total_amount * 0.2;
+ 32  	 final_amt := v_total_amount + tot_discount;
+ 33    END IF;
+ 34  
+ 35    DBMS_OUTPUT.PUT_LINE('Order_number: ' || v_order_no || ' Customer Name: ' || v_cust_name);
+ 36    DBMS_OUTPUT.PUT_LINE('Ordered date: ' || TO_CHAR(v_order_date, 'DD-Mon-YYYY') || ' Phone: ' || v_phone);
+ 37    DBMS_OUTPUT.PUT_LINE('--------------------------------------------');
+ 38    DBMS_OUTPUT.PUT_LINE('S.NO'||' '||'PIZZA'||' '||'QTY'||' '||'PRICE'||' '||'TOTAL AMOUNT');
+ 39  
+ 40    FOR rec IN (SELECT p.pizza_type, ol.qty, ord.tot_amt, p.unit_price
+ 41  		   FROM orders ord, order_list ol, pizza p
+ 42  		   WHERE p.pizza_id = ol.pizza_id AND ord.order_no = ol.fk_order_no AND order_no = o_no)
+ 43    LOOP
+ 44  	 ct := ct + 1;
+ 45  	 DBMS_OUTPUT.PUT_LINE(ct || ' ' || rec.pizza_type || ' ' || rec.qty || ' ' || rec.tot_amt || ' ' || rec.unit_price);
+ 46    END LOOP;
+ 47    DBMS_OUTPUT.PUT_LINE('----------------------------------------------');
+ 48    DBMS_OUTPUT.PUT_LINE('Total Amount: ' || v_total_amount);
+ 49    DBMS_OUTPUT.PUT_LINE('Discount: ' || tot_discount);
+ 50    DBMS_OUTPUT.PUT_LINE('Final Amount: ' || final_amt);
+ 51  END;
+ 52  /
+
+Procedure created.
+
+SQL> 
+SQL> DECLARE
+  2  	  o_no orders.order_no%TYPE;
+  3  BEGIN
+  4    o_no := '&o_no';
+  5    calc_discount(o_no);
+  6  END;
+  7  /
+Enter value for o_no: OP100
+old   4:   o_no := '&o_no';
+new   4:   o_no := 'OP100';
+Order_number: OP100 Customer Name: Hari                                         
+Ordered date: 28-Jun-2015 Phone: 9001200031                                     
+--------------------------------------------                                    
+S.NO PIZZA QTY PRICE TOTAL AMOUNT                                               
+1 pan 3 3550 130                                                                
+2 grilled 2 3550 230                                                            
+3 italian 2 3550 200                                                            
+4 spanish 5 3550 260                                                            
+5 supremo 4 3550 250                                                            
+----------------------------------------------                                  
+Total Amount: 3550                                                              
+Discount: 177.5                                                                 
+Final Amount: 3727.5                                                            
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> REM:3. Write a stored function to display the customer name who ordered
+SQL> REM:highest among the total number of pizzas for a given pizza type.
+SQL> 
+SQL> CREATE OR REPLACE FUNCTION highest_ordering_customer(pizza_type IN pizza.pizza_type%TYPE)
+  2  RETURN VARCHAR2
+  3  IS
+  4    maxqty number := 0;
+  5    v_customer_name customer.cust_name%TYPE;
+  6  BEGIN
+  7    for i in (SELECT c.cust_name, p.pizza_id, SUM(ol.qty) as total_qty
+  8  		 FROM orders o
+  9  		 JOIN customer c ON o.FK_cust_id = c.cust_id
+ 10  		 JOIN order_list ol ON o.order_no = ol.FK_order_no
+ 11  		 JOIN pizza p ON ol.pizza_id = p.pizza_id
+ 12  		 WHERE p.pizza_type = pizza_type
+ 13  		 GROUP BY c.cust_name, p.pizza_id)
+ 14    loop
+ 15  	 if i.total_qty > maxqty then
+ 16  	   maxqty := i.total_qty;
+ 17  	   v_customer_name := i.cust_name;
+ 18  	 end if;
+ 19    end loop;
+ 20  
+ 21    RETURN v_customer_name;
+ 22  END;
+ 23  /
+
+Function created.
+
+SQL> 
+SQL> DECLARE
+  2    top_customer VARCHAR2(50);
+  3    pizza_type varchar(50);
+  4  BEGIN
+  5    pizza_type:='&pizza_type';
+  6    top_customer := highest_ordering_customer(pizza_type);
+  7    DBMS_OUTPUT.PUT_LINE('Customer who ordered the most Italian pizzas: ' || top_customer);
+  8  END;
+  9  /
+Enter value for pizza_type: italian
+old   5:   pizza_type:='&pizza_type';
+new   5:   pizza_type:='italian';
+Customer who ordered the most Italian pizzas: Hari                              
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> REM:4. Implement Question (2) using stored function to return the amount to be
+SQL> REM:paid and update the same, for the given order number.
+SQL> 
+SQL> CREATE OR REPLACE FUNCTION calculate_final_amount(o_no IN orders.order_no%TYPE)
+  2  RETURN NUMBER
+  3  IS
+  4    v_total_amount orders.tot_amt%TYPE;
+  5    tot_discount NUMBER;
+  6    final_amt NUMBER;
+  7  BEGIN
+  8    SELECT tot_amt
+  9    INTO v_total_amount
+ 10    FROM orders
+ 11    WHERE order_no = o_no;
+ 12  
+ 13    IF v_total_amount > 2000 AND v_total_amount < 5000 THEN
+ 14  	 tot_discount := v_total_amount * 0.05;
+ 15    ELSIF v_total_amount >= 5000 AND v_total_amount < 10000 THEN
+ 16  	 tot_discount := v_total_amount * 0.1;
+ 17    ELSE
+ 18  	 tot_discount := v_total_amount * 0.2;
+ 19    END IF;
+ 20  
+ 21    final_amt := v_total_amount + tot_discount;
+ 22  
+ 23    UPDATE orders
+ 24    SET tot_amt = final_amt
+ 25    WHERE order_no = o_no;
+ 26  
+ 27    RETURN final_amt;
+ 28  END;
+ 29  /
+
+Function created.
+
+SQL> DECLARE
+  2    o_no orders.order_no%TYPE;
+  3    final_amount NUMBER;
+  4  BEGIN
+  5    o_no:='&o_no';
+  6    final_amount := calculate_final_amount(o_no);
+  7    DBMS_OUTPUT.PUT_LINE('Order Number: ' || o_no);
+  8    DBMS_OUTPUT.PUT_LINE('Final Amount to be Paid: ' || final_amount);
+  9  END;
+ 10  /
+Enter value for o_no: OP100
+old   5:   o_no:='&o_no';
+new   5:   o_no:='OP100';
+Order Number: OP100                                                             
+Final Amount to be Paid: 3727.5                                                 
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> 
+SQL> spool off;

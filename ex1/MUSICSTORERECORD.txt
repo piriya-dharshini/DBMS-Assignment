@@ -1,0 +1,325 @@
+SQL> @"D:\sem-3\sql\ex1\MUSIC STORE.sql"
+SQL> REM:***********MUSIC STORE***************
+SQL> REM:------------------------------------
+ 
+SQL> REM:Droping tables:song,sungby,album,studio,musician,artist
+ 
+SQL> drop table sungby cascade constraints;
+
+Table dropped.
+
+SQL> drop table artist cascade constraints;
+
+Table dropped.
+
+SQL> drop table song cascade constraints;
+
+Table dropped.
+
+SQL> drop table album cascade constraints;
+
+Table dropped.
+
+SQL> drop table musician cascade constraints;
+
+Table dropped.
+
+SQL> drop table studio cascade constraints;
+
+Table dropped.
+
+ 
+SQL> REM:Creating tables
+ 
+SQL> CREATE TABLE musician(
+  2  musicianid int ,
+  3  name varchar(255),
+  4  birthplace varchar(255)
+  5  );
+
+Table created.
+
+ 
+SQL> CREATE TABLE studio(
+  2  name_studio varchar(255),
+  3  address varchar(255),
+  4  phoneno varchar(10)
+  5  );
+
+Table created.
+
+ 
+SQL> CREATE TABLE album(
+  2  name varchar(255),
+  3  albumid int ,
+  4  release_year int ,
+  5  no_of_tracks int ,
+  6  studioname varchar(255),
+  7  genre varchar(3),
+  8  musician_id int
+  9  );
+
+Table created.
+
+ 
+SQL> CREATE TABLE artist(
+  2  artistid int,
+  3  artistname varchar(255)
+  4  );
+
+Table created.
+ 
+SQL> CREATE TABLE sungby(
+  2  album_id int,
+  3  artist_id int,
+  4  track_no int,
+  5  rec_date date
+  6  );
+
+Table created.
+ 
+SQL> CREATE TABLE song(
+  2  album__id int,
+  3  track_no int,
+  4  songname varchar(15),
+  5  length int,
+  6  songgenre varchar(3)
+  7  );
+
+Table created.
+
+ 
+SQL> REM:Alter table questions
+ 
+SQL> REM:1) The genre for Album can be generally categorized as CAR for
+SQL> REM:Carnatic, DIV for Divine, MOV for Movies, POP for Pop songs.
+ 
+SQL> ALTER TABLE album
+  2  ADD CONSTRAINT genre CHECK(genre in ('CAR','DIV','MOV','POP'));
+
+Table altered.
+ 
+SQL> REM:------------------------------------------------------------
+> REM:2) The genre for Song can be PHI for philosophical, REL for relationship,
+SQL> REM:LOV for duet, DEV for devotional, PAT for patriotic type of songs.
+ 
+SQL> ALTER TABLE song
+  2  ADD CONSTRAINT songgenre CHECK(songgenre in ('PHI','REL','LOV','DEV','PAT'));
+
+Table altered.
+
+SQL> REM:------------------------------------------------------------
+ 
+SQL> REM:3) The artist ID, album ID, musician ID, and track number, studio name
+SQL> REM:are used to retrieve tuple(s) individually from respective relations.
+ 
+SQL> ALTER TABLE musician
+  2  ADD PRIMARY KEY(musicianid);
+
+Table altered.
+
+ 
+SQL> ALTER TABLE studio
+  2  ADD PRIMARY KEY(name_studio);
+
+Table altered.
+ 
+SQL> ALTER TABLE album
+  2  ADD PRIMARY KEY(albumid);
+
+Table altered.
+ 
+SQL> ALTER TABLE artist
+  2  ADD PRIMARY KEY(artistid);
+
+Table altered.
+ 
+SQL> ALTER TABLE song
+  2  ADD PRIMARY KEY(track_no);
+
+Table altered.
+
+SQL> ALTER TABLE sungby
+  2  ADD PRIMARY KEY(track_no,album_id);
+
+Table altered.
+
+SQL> REM:------------------------------------------------------------
+ 
+SQL> REM:4) Ensure that the artist, musician, song, sungby and studio 
+SQL> REM:can not be removed without deleting the album details.
+SQL> 
+SQL> ALTER TABLE album
+  2  ADD CONSTRAINT fk_album_studioname
+  3  FOREIGN KEY(studioname) REFERENCES studio(name_studio);
+
+Table altered.
+
+SQL> ALTER TABLE album
+  2  ADD CONSTRAINT fk_musician_id
+  3  FOREIGN KEY(musician_id) REFERENCES musician(musicianid);
+
+Table altered.
+
+SQL> REM:------------------------------------------------------------
+
+SQL> REM:5) A song may be sung by more than one artist. The same artist
+SQL> REM:may sing for more than one track in the same album. 
+SQL> REM:Similarly the artist can sing for different album(s). 
+
+SQL> ALTER TABLE sungby
+  2  ADD CONSTRAINT FK_album_id
+  3  FOREIGN KEY(album_id) REFERENCES album(albumid);
+
+Table altered.
+ 
+SQL> ALTER TABLE sungby
+  2  ADD CONSTRAINT FK_artist_id
+  3  FOREIGN KEY(artist_id) REFERENCES artist(artistid);
+
+Table altered.
+ 
+SQL> ALTER TABLE sungby
+  2  ADD CONSTRAINT FK_track_no
+  3  FOREIGN KEY(track_no) REFERENCES song(track_no);
+
+Table altered.
+ 
+SQL> ALTER TABLE song
+  2  ADD CONSTRAINT fkalbum_id
+  3  FOREIGN KEY(album__id) REFERENCES album(albumid);
+
+Table altered.
+
+SQL> REM:------------------------------------------------------------
+ 
+SQL> REM:6)It was learnt that the artists do not have the same name.
+SQL> 
+SQL> ALTER TABLE artist
+  2  ADD UNIQUE(artistname);
+
+Table altered.
+
+SQL> REM:------------------------------------------------------------
+ 
+SQL> REM:7) The number of tracks in an album must always be recorded.
+SQL> 
+SQL> ALTER TABLE album
+  2  MODIFY no_of_tracks int NOT NULL;
+
+Table altered.
+
+SQL> REM:------------------------------------------------------------
+
+SQL> REM:8) The length of each song must be greater than 7 for PAT songs.
+ 
+SQL> ALTER TABLE song
+  2  ADD CONSTRAINT checkgenre
+  3  CHECK(songgenre='PAT' AND length>7);
+
+Table altered.
+
+ 
+SQL> REM:------------------------------------------------------------
+ 
+SQL> REM:9) The year of release of an album can not be earlier than 1945
+SQL> ALTER TABLE album
+  2  ADD CONSTRAINT release_year CHECK(release_year>=1945);
+
+Table altered.
+
+ 
+SQL> REM:------------------------------------------------------------
+ 
+SQL> REM:10) It is necessary to represent the gender of an artist in the table.
+SQL> 
+SQL> ALTER TABLE artist
+  2  ADD gender varchar(255);
+
+Table altered.
+
+SQL> REM:------------------------------------------------------------
+ 
+SQL> REM:11)The first few words of the lyrics constitute the song name. The
+SQL> REM:song name has to accommodate some of the words (in lyrics).
+SQL> ALTER TABLE Song
+  2  MODIFY songname varchar(30);
+
+Table altered.
+
+SQL> REM:------------------------------------------------------------
+ 
+SQL> 
+SQL> REM:12)The phone number of each studio should be different
+SQL> 
+SQL> ALTER TABLE studio
+  2  ADD UNIQUE(phoneno);
+
+Table altered.
+
+SQL> REM:------------------------------------------------------------
+ 
+SQL> REM:13) An artist who sings a song for a particular track of an album 
+
+SQL> REM:can not be recorded without the record_date.
+SQL> ALTER TABLE sungby
+  2  MODIFY rec_date DATE NOT NULL;
+
+Table altered.
+
+SQL> REM:------------------------------------------------------------
+ 
+SQL> REM:14)It was decided to include the genre NAT for nature songs.
+SQL> 
+SQL> ALTER TABLE song
+  2  MODIFY CHECK(songgenre in ('PHI','REL','LOV','DEV','PAT','NAT'));
+
+Table altered.
+
+SQL> REM:------------------------------------------------------------
+ 
+SQL> REM:15)Due to typo-error, there may be a possibility of false information.
+SQL> REM:Hence while deleting the song information, make sure that all the
+SQL> REM:corresponding information are also deleted.
+SQL> 
+SQL> ALTER TABLE sungby
+  2  DROP CONSTRAINT FK_artist_id;
+
+Table altered.
+
+ 
+SQL> ALTER TABLE sungby
+  2  DROP CONSTRAINT FK_album_id;
+
+Table altered.
+
+ 
+SQL> ALTER TABLE sungby
+  2  DROP CONSTRAINT FK_track_no;
+
+Table altered.
+
+ 
+SQL> ALTER TABLE sungby
+  2  ADD FOREIGN KEY (album_id) REFERENCES album(albumid)
+  3  ON DELETE CASCADE;
+
+Table altered.
+
+ 
+SQL> ALTER TABLE sungby
+  2  ADD CONSTRAINT FK_album_id
+     FOREIGN KEY (artist_id) REFERENCES artist(artistid)
+  3  ON DELETE CASCADE;
+
+Table altered.
+
+ 
+SQL> ALTER TABLE sungby
+  2  ADD FOREIGN KEY (track_no) REFERENCES song(track_no)
+  3  ON DELETE CASCADE;
+
+Table altered.
+
+SQL> REM:------------------------------------------------------------
+

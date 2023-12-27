@@ -1,0 +1,99 @@
+drop table CLASSES cascade constraints;
+create table CLASSES(
+class varchar(30) primary key,
+type varchar(2),
+CHECK(type in ('bc','bb')),
+country varchar(10),
+numGuns int,
+bore int,
+displacement int
+);
+
+insert into classes(class,type,country,numGuns,bore,displacement) values(
+'Bismark',
+'bb',
+'Germany',
+8,
+14,
+32000
+);
+
+insert into classes(class,type,country,numGuns,bore,displacement) values(
+'Iowa',
+'bb',
+'USA',
+9,
+16,
+46000
+);
+
+insert into classes(class,type,country,numGuns,bore,displacement) values(
+'Kongo',
+'bc',
+'Japan',
+8,
+15,
+42000
+);
+
+insert into classes(class,type,country,numGuns,bore,displacement) values(
+'North California',
+'bb',
+'USA',
+9,
+16,
+37000
+);
+
+insert into classes(class,type,country,numGuns,bore,displacement) values(
+'Revenge',
+'bb',
+'Gt.Britain',
+8,
+15,
+29000
+);
+
+insert into classes(class,type,country,numGuns,bore,displacement) values(
+'Renown',
+'bc',
+'Gt.Britain',
+6,
+15,
+32000
+);
+
+select * from classes;
+
+REM:BEGIN TRANSACTION classes;
+
+REM:SET TRANSACTION READ WRITE;
+
+SAVEPOINT SP1;
+
+update classes
+set displacement=(displacement+0.1*displacement)
+where (numGuns=9 or bore>=15);
+
+select * from classes;
+
+DELETE FROM classes
+WHERE class='Kongo';
+
+select* from classes;
+
+ROLLBACK TO SP1;
+
+select* from classes;
+
+COMMIT;
+
+
+
+
+
+
+
+
+
+

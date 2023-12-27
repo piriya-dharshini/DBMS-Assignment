@@ -1,0 +1,450 @@
+SQL> @"D:\sem-3\sql\8\ex8.sql"
+SQL> -- Create the table
+SQL> DROP TABLE RentalProperty;
+
+Table dropped.
+
+SQL> DROP TABLE Owners cascade constraints;
+
+Table dropped.
+
+SQL> DROP TABLE customer cascade constraints;
+
+Table dropped.
+
+SQL> DROP TABLE rentalhistory cascade constraints;
+
+Table dropped.
+
+SQL> DROP TABLE property cascade constraints;
+
+Table dropped.
+
+SQL> CREATE TABLE RentalProperty (
+  2  	 ClientNo VARCHAR2(5),
+  3  	 Cname VARCHAR2(50),
+  4  	 PropNo VARCHAR2(5),
+  5  	 PAddr VARCHAR2(100),
+  6  	 RntSt DATE,
+  7  	 RntFnsh DATE,
+  8  	 Rent NUMBER,
+  9  	 OwnerNo VARCHAR2(5),
+ 10  	 OName VARCHAR2(50),
+ 11  	 PRIMARY KEY(ClientNo, PropNo)
+ 12  );
+
+Table created.
+
+SQL> 
+SQL> -- Insert data into the table
+SQL> INSERT INTO RentalProperty (ClientNo, Cname, PropNo, PAddr, RntSt, RntFnsh, Rent, OwnerNo, OName)
+  2  VALUES
+  3  	 ('CR76', 'John Kay', 'PG4', '6 Lawrence St, Elmont', TO_DATE('2010-07-01', 'YYYY-MM-DD'), TO_DATE('2006-09-01', 'YYYY-MM-DD'), 700, 'CO40', 'Tina Murphy');
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO RentalProperty (ClientNo, Cname, PropNo, PAddr, RntSt, RntFnsh, Rent, OwnerNo, OName)
+  2  VALUES
+  3  	 ('CR76', 'John Kay', 'PG16', '5 Nova Dr, East Meadow', TO_DATE('2006-08-31', 'YYYY-MM-DD'), TO_DATE('2008-09-01', 'YYYY-MM-DD'), 900, 'CO93', 'Tony Shaw');
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO RentalProperty (ClientNo, Cname, PropNo, PAddr, RntSt, RntFnsh, Rent, OwnerNo, OName)
+  2  VALUES
+  3  	 ('CR56', 'Aline Stewart', 'PG4', '6 Lawrence St, Elmont', TO_DATE('2002-09-01', 'YYYY-MM-DD'), TO_DATE('2004-08-01', 'YYYY-MM-DD'), 700, 'CO40', 'Tina Murphy');
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO RentalProperty (ClientNo, Cname, PropNo, PAddr, RntSt, RntFnsh, Rent, OwnerNo, OName)
+  2  VALUES
+  3  	 ('CR56', 'Aline Stewart', 'PG36', '2 Manor Rd, Scarsdale', TO_DATE('2004-06-10', 'YYYY-MM-DD'), TO_DATE('2005-12-01', 'YYYY-MM-DD'), 750, 'CO93', 'Tony Shaw');
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO RentalProperty (ClientNo, Cname, PropNo, PAddr, RntSt, RntFnsh, Rent, OwnerNo, OName)
+  2  VALUES
+  3  	 ('CR56', 'Aline Stewart', 'PG16', '5 Nova Dr, East Meadow', TO_DATE('2006-09-01', 'YYYY-MM-DD'), TO_DATE('2010-09-01', 'YYYY-MM-DD'), 900, 'CO93', 'Tony Shaw');
+
+1 row created.
+
+SQL> 
+SQL> SELECT
+  2  	 ClientNo || ', ' ||
+  3  	 Cname || ', ' ||
+  4  	 PropNo || ', ' ||
+  5  	 PAddr || ', ' ||
+  6  	 TO_CHAR(RntSt, 'YYYY-MM-DD') || ', ' ||
+  7  	 TO_CHAR(RntFnsh, 'YYYY-MM-DD') || ', ' ||
+  8  	 Rent || ', ' ||
+  9  	 OwnerNo || ', ' ||
+ 10  	 OName AS FullRow
+ 11  FROM RentalProperty;
+
+FULLROW                                                                         
+--------------------------------------------------------------------------------
+CR76, John Kay, PG4, 6 Lawrence St, Elmont, 2010-07-01, 2006-09-01, 700, CO40, T
+ina Murphy                                                                      
+                                                                                
+CR76, John Kay, PG16, 5 Nova Dr, East Meadow, 2006-08-31, 2008-09-01, 900, CO93,
+ Tony Shaw                                                                      
+                                                                                
+CR56, Aline Stewart, PG4, 6 Lawrence St, Elmont, 2002-09-01, 2004-08-01, 700, CO
+40, Tina Murphy                                                                 
+                                                                                
+CR56, Aline Stewart, PG36, 2 Manor Rd, Scarsdale, 2004-06-10, 2005-12-01, 750, C
+O93, Tony Shaw                                                                  
+
+FULLROW                                                                         
+--------------------------------------------------------------------------------
+                                                                                
+CR56, Aline Stewart, PG16, 5 Nova Dr, East Meadow, 2006-09-01, 2010-09-01, 900, 
+CO93, Tony Shaw                                                                 
+                                                                                
+
+SQL> 
+SQL> -- Create the table
+SQL> CREATE TABLE Owners (
+  2  	 OwnerNo VARCHAR2(5) PRIMARY KEY,
+  3  	 OName VARCHAR2(50)
+  4  );
+
+Table created.
+
+SQL> 
+SQL> -- Insert data into the table
+SQL> INSERT INTO Owners (OwnerNo, OName)
+  2  VALUES ('CO40', 'Tina Murphy');
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO Owners (OwnerNo, OName)
+  2  VALUES ('CO93', 'Tony Shaw');
+
+1 row created.
+
+SQL> 
+SQL> -- Display the contents of the table
+SQL> SELECT * FROM Owners;
+
+OWNER ONAME                                                                     
+----- --------------------------------------------------                        
+CO40  Tina Murphy                                                               
+CO93  Tony Shaw                                                                 
+
+SQL> 
+SQL> -- Create the table
+SQL> CREATE TABLE Customer (
+  2  	 ClientNo VARCHAR2(5) PRIMARY KEY,
+  3  	 CName VARCHAR2(50)
+  4  );
+
+Table created.
+
+SQL> 
+SQL> -- Insert data into the table
+SQL> INSERT INTO Customer (ClientNo, CName)
+  2  VALUES ('CR76', 'John Kay');
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO Customer (ClientNo, CName)
+  2  VALUES ('CR56', 'Aline Stewart');
+
+1 row created.
+
+SQL> 
+SQL> -- Display the contents of the table
+SQL> SELECT * FROM Customer;
+
+CLIEN CNAME                                                                     
+----- --------------------------------------------------                        
+CR76  John Kay                                                                  
+CR56  Aline Stewart                                                             
+
+SQL> 
+SQL> -- Create the table
+SQL> CREATE TABLE RentalHistory (
+  2  	 ClientNo VARCHAR2(5),
+  3  	 PropNo VARCHAR2(5),
+  4  	 RentStart DATE,
+  5  	 RentFinish DATE,
+  6  	 PRIMARY KEY (ClientNo, PropNo),
+  7  	 FOREIGN KEY (ClientNo) REFERENCES Customer(ClientNo)
+  8  );
+
+Table created.
+
+SQL> 
+SQL> -- Insert data into the table
+SQL> INSERT INTO RentalHistory (ClientNo, PropNo, RentStart, RentFinish)
+  2  VALUES ('CR76', 'PG4', TO_DATE('7/1/10', 'MM/DD/YY'), TO_DATE('8/31/06', 'MM/DD/YY'));
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO RentalHistory (ClientNo, PropNo, RentStart, RentFinish)
+  2  VALUES ('CR76', 'PG16', TO_DATE('9/1/06', 'MM/DD/YY'), TO_DATE('9/1/08', 'MM/DD/YY'));
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO RentalHistory (ClientNo, PropNo, RentStart, RentFinish)
+  2  VALUES ('CR56', 'PG4', TO_DATE('9/1/02', 'MM/DD/YY'), TO_DATE('6/10/04', 'MM/DD/YY'));
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO RentalHistory (ClientNo, PropNo, RentStart, RentFinish)
+  2  VALUES ('CR56', 'PG36', TO_DATE('1/1/04', 'MM/DD/YY'), TO_DATE('12/1/05', 'MM/DD/YY'));
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO RentalHistory (ClientNo, PropNo, RentStart, RentFinish)
+  2  VALUES ('CR56', 'PG16', TO_DATE('8/1/06', 'MM/DD/YY'), TO_DATE('9/1/10', 'MM/DD/YY'));
+
+1 row created.
+
+SQL> 
+SQL> -- Display the contents of the table
+SQL> SELECT * FROM RentalHistory;
+
+CLIEN PROPN RENTSTART RENTFINIS                                                 
+----- ----- --------- ---------                                                 
+CR76  PG4   01-JUL-10 31-AUG-06                                                 
+CR76  PG16  01-SEP-06 01-SEP-08                                                 
+CR56  PG4   01-SEP-02 10-JUN-04                                                 
+CR56  PG36  01-JAN-04 01-DEC-05                                                 
+CR56  PG16  01-AUG-06 01-SEP-10                                                 
+
+SQL> 
+SQL> -- Create the table
+SQL> CREATE TABLE Property (
+  2  	 PropNo VARCHAR2(5) PRIMARY KEY,
+  3  	 PAddr VARCHAR2(100),
+  4  	 Rent INT,
+  5  	 OwnerNo VARCHAR2(5),
+  6  	 FOREIGN KEY (OwnerNo) REFERENCES Owners(OwnerNo)
+  7  );
+
+Table created.
+
+SQL> 
+SQL> -- Insert data into the table
+SQL> INSERT INTO Property (PropNo, PAddr, Rent, OwnerNo)
+  2  VALUES ('PG4', '6 Lawrence St, Elmont', 700, 'CO40');
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO Property (PropNo, PAddr, Rent, OwnerNo)
+  2  VALUES ('PG16', '5 Nova Dr, East Meadow', 900, 'CO93');
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO Property (PropNo, PAddr, Rent, OwnerNo)
+  2  VALUES ('PG36', '2 Manor Rd, Scarsdale', 750, 'CO93');
+
+1 row created.
+
+SQL> 
+SQL> -- Display the contents of the table
+SQL> SELECT * FROM Property;
+
+PROPN                                                                           
+-----                                                                           
+PADDR                                                                           
+--------------------------------------------------------------------------------
+      RENT OWNER                                                                
+---------- -----                                                                
+PG4                                                                             
+6 Lawrence St, Elmont                                                           
+       700 CO40                                                                 
+                                                                                
+PG16                                                                            
+5 Nova Dr, East Meadow                                                          
+       900 CO93                                                                 
+
+PROPN                                                                           
+-----                                                                           
+PADDR                                                                           
+--------------------------------------------------------------------------------
+      RENT OWNER                                                                
+---------- -----                                                                
+                                                                                
+PG36                                                                            
+2 Manor Rd, Scarsdale                                                           
+       750 CO93                                                                 
+                                                                                
+
+SQL> 
+SQL> 
+SQL> -- Display information from joined tables
+SQL> -- Display information from joined tables
+SQL> SELECT
+  2  	 c.ClientNo,
+  3  	 c.Cname,
+  4  	 p.PropNo,
+  5  	 p.PAddr,
+  6  	 p.Rent,
+  7  	 rh.RentStart,
+  8  	 rh.RentFinish,
+  9  	 o.Oname,
+ 10  	 o.OwnerNo
+ 11  FROM Property p
+ 12  JOIN Owners o ON p.OwnerNo = o.OwnerNo
+ 13  JOIN RentalHistory rh ON p.PropNo = rh.PropNo
+ 14  JOIN Customer c ON rh.ClientNo = c.ClientNo;
+
+CLIEN CNAME                                              PROPN                  
+----- -------------------------------------------------- -----                  
+PADDR                                                                           
+--------------------------------------------------------------------------------
+      RENT RENTSTART RENTFINIS                                                  
+---------- --------- ---------                                                  
+ONAME                                              OWNER                        
+-------------------------------------------------- -----                        
+CR76  John Kay                                           PG16                   
+5 Nova Dr, East Meadow                                                          
+       900 01-SEP-06 01-SEP-08                                                  
+Tony Shaw                                          CO93                         
+                                                                                
+
+CLIEN CNAME                                              PROPN                  
+----- -------------------------------------------------- -----                  
+PADDR                                                                           
+--------------------------------------------------------------------------------
+      RENT RENTSTART RENTFINIS                                                  
+---------- --------- ---------                                                  
+ONAME                                              OWNER                        
+-------------------------------------------------- -----                        
+CR76  John Kay                                           PG4                    
+6 Lawrence St, Elmont                                                           
+       700 01-JUL-10 31-AUG-06                                                  
+Tina Murphy                                        CO40                         
+                                                                                
+
+CLIEN CNAME                                              PROPN                  
+----- -------------------------------------------------- -----                  
+PADDR                                                                           
+--------------------------------------------------------------------------------
+      RENT RENTSTART RENTFINIS                                                  
+---------- --------- ---------                                                  
+ONAME                                              OWNER                        
+-------------------------------------------------- -----                        
+CR56  Aline Stewart                                      PG16                   
+5 Nova Dr, East Meadow                                                          
+       900 01-AUG-06 01-SEP-10                                                  
+Tony Shaw                                          CO93                         
+                                                                                
+
+CLIEN CNAME                                              PROPN                  
+----- -------------------------------------------------- -----                  
+PADDR                                                                           
+--------------------------------------------------------------------------------
+      RENT RENTSTART RENTFINIS                                                  
+---------- --------- ---------                                                  
+ONAME                                              OWNER                        
+-------------------------------------------------- -----                        
+CR56  Aline Stewart                                      PG36                   
+2 Manor Rd, Scarsdale                                                           
+       750 01-JAN-04 01-DEC-05                                                  
+Tony Shaw                                          CO93                         
+                                                                                
+
+CLIEN CNAME                                              PROPN                  
+----- -------------------------------------------------- -----                  
+PADDR                                                                           
+--------------------------------------------------------------------------------
+      RENT RENTSTART RENTFINIS                                                  
+---------- --------- ---------                                                  
+ONAME                                              OWNER                        
+-------------------------------------------------- -----                        
+CR56  Aline Stewart                                      PG4                    
+6 Lawrence St, Elmont                                                           
+       700 01-SEP-02 10-JUN-04                                                  
+Tina Murphy                                        CO40                         
+                                                                                
+
+SQL> 
+SQL> 
+SQL> select * from RentalProperty;
+
+CLIEN CNAME                                              PROPN                  
+----- -------------------------------------------------- -----                  
+PADDR                                                                           
+--------------------------------------------------------------------------------
+RNTST     RNTFNSH         RENT OWNER                                            
+--------- --------- ---------- -----                                            
+ONAME                                                                           
+--------------------------------------------------                              
+CR76  John Kay                                           PG4                    
+6 Lawrence St, Elmont                                                           
+01-JUL-10 01-SEP-06        700 CO40                                             
+Tina Murphy                                                                     
+                                                                                
+
+CLIEN CNAME                                              PROPN                  
+----- -------------------------------------------------- -----                  
+PADDR                                                                           
+--------------------------------------------------------------------------------
+RNTST     RNTFNSH         RENT OWNER                                            
+--------- --------- ---------- -----                                            
+ONAME                                                                           
+--------------------------------------------------                              
+CR76  John Kay                                           PG16                   
+5 Nova Dr, East Meadow                                                          
+31-AUG-06 01-SEP-08        900 CO93                                             
+Tony Shaw                                                                       
+                                                                                
+
+CLIEN CNAME                                              PROPN                  
+----- -------------------------------------------------- -----                  
+PADDR                                                                           
+--------------------------------------------------------------------------------
+RNTST     RNTFNSH         RENT OWNER                                            
+--------- --------- ---------- -----                                            
+ONAME                                                                           
+--------------------------------------------------                              
+CR56  Aline Stewart                                      PG4                    
+6 Lawrence St, Elmont                                                           
+01-SEP-02 01-AUG-04        700 CO40                                             
+Tina Murphy                                                                     
+                                                                                
+
+CLIEN CNAME                                              PROPN                  
+----- -------------------------------------------------- -----                  
+PADDR                                                                           
+--------------------------------------------------------------------------------
+RNTST     RNTFNSH         RENT OWNER                                            
+--------- --------- ---------- -----                                            
+ONAME                                                                           
+--------------------------------------------------                              
+CR56  Aline Stewart                                      PG36                   
+2 Manor Rd, Scarsdale                                                           
+10-JUN-04 01-DEC-05        750 CO93                                             
+Tony Shaw                                                                       
+                                                                                
+
+CLIEN CNAME                                              PROPN                  
+----- -------------------------------------------------- -----                  
+PADDR                                                                           
+--------------------------------------------------------------------------------
+RNTST     RNTFNSH         RENT OWNER                                            
+--------- --------- ---------- -----                                            
+ONAME                                                                           
+--------------------------------------------------                              
+CR56  Aline Stewart                                      PG16                   
+5 Nova Dr, East Meadow                                                          
+01-SEP-06 01-SEP-10        900 CO93                                             
+Tony Shaw                                                                       
+                                                                                
+
+SQL> spool off;

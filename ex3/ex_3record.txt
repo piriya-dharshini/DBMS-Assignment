@@ -1,0 +1,550 @@
+SQL> set echo on;
+SQL> @"D:\sem-3\sql\ex3\pizzams_final.sql"
+SQL> REM:dropping tables
+SQL> drop table customer cascade constraints;
+
+Table dropped.
+
+SQL> drop table pizza cascade constraints;
+
+Table dropped.
+
+SQL> drop table orders cascade constraints;
+
+Table dropped.
+
+SQL> drop table order_list cascade constraints;
+
+Table dropped.
+
+
+SQL> REM:Creating table customer,pizza
+SQL> REM:order,order_list
+SQL> CREATE TABLE customer(
+  2  	     cust_id varchar(4) PRIMARY KEY,
+  3  	     cust_name varchar(40),
+  4  	     address varchar(200),
+  5  	     phone number(10)
+  6  	     );
+
+Table created.
+ 
+SQL> CREATE TABLE pizza(
+  2  	     pizza_id varchar(4) PRIMARY KEY,
+  3  	     pizza_type varchar(40),
+  4  	     unit_prize number(3)
+  5  	     );
+
+Table created.
+
+SQL> CREATE TABLE orders(
+  2  	     order_no varchar(5) PRIMARY KEY,
+  3  	     FK_cust_id varchar(4),
+  4  	     FOREIGN KEY(FK_cust_id) REFERENCES customer(cust_id),
+  5  	     order_date date,
+  6  	     delv_date date
+  7  	     );
+
+Table created.
+
+SQL> CREATE TABLE order_list(
+  2  	     FK_order_no varchar(5),
+  3  	     FOREIGN KEY(FK_order_no) REFERENCES orders(order_no),
+  4  	     pizza_id varchar(4),
+  5  	     PRIMARY KEY(FK_order_no,pizza_id),
+  6  	     qty number NOT NULL
+  7  	     );
+
+Table created.
+
+
+SQL> REm customer(cust_id, cust_name, address, phone)
+SQL> REM pizza (pizza_id, pizza_type, unit_price)
+SQL> REM orders(order_no, cust_id, order_date ,delv_date, total_amt)
+SQL> REM order_list(order_no, pizza_id, qty)
+SQL> REM ------------------------------------------------------------------------------------------
+> 
+SQL> REM customer(cust_id, cust_name,address,phone)
+SQL> insert into customer values('c001','Hari','32 RING ROAD,ALWARPET',9001200031);
+
+1 row created.
+
+SQL> insert into customer values('c002','Prasanth','42 bull ROAD,numgambakkam',9444120003);
+
+1 row created.
+
+SQL> insert into customer values('c003','Neethu','12a RING ROAD,ALWARPET',9840112003);
+
+1 row created.
+
+SQL> insert into customer values('c004','Jim','P.H ROAD,Annanagar',9845712993);
+
+1 row created.
+
+SQL> insert into customer values('c005','Sindhu','100 feet ROAD,vadapalani',9840166677);
+
+1 row created.
+
+SQL> insert into customer values('c006','Brinda','GST ROAD, TAMBARAM', 9876543210);
+
+1 row created.
+
+SQL> insert into customer values('c007','Ramkumar','2nd cross street, Perambur',8566944453);
+
+1 row created.
+
+
+SQL> REM pizza (pizza_id, pizza_type, unit_price) 
+SQL> insert into pizza values('p001','pan',130);
+
+1 row created.
+
+SQL> insert into pizza values('p002','grilled',230);
+
+1 row created.
+
+SQL> insert into pizza values('p003','italian',200);
+
+1 row created.
+
+SQL> insert into pizza values('p004','spanish',260);
+
+1 row created.
+
+SQL> insert into pizza values('p005','supremo',250);
+
+1 row created.
+
+SQL> REM orders(order_no, cust_id, order_date ,delv_date) 
+SQL> insert into orders values('OP100','c001','28-JUN-2015','28-JUN-2015');
+
+1 row created.
+
+SQL> insert into orders values('OP200','c002','28-JUN-2015','29-JUN-2015');
+
+1 row created.
+ 
+SQL> insert into orders values('OP300','c003','29-JUN-2015','29-JUN-2015');
+
+1 row created.
+
+SQL> insert into orders values('OP400','c004','29-JUN-2015','29-JUN-2015');
+
+1 row created.
+
+SQL> insert into orders values('OP500','c001','29-JUN-2015','30-JUN-2015');
+
+1 row created.
+
+SQL> insert into orders values('OP600','c002','29-JUN-2015','29-JUN-2015');
+
+1 row created.
+ 
+SQL> insert into orders values('OP700','c005','30-JUN-2015','30-JUN-2015');
+
+1 row created.
+
+SQL> insert into orders values('OP800','c006','30-JUN-2015','30-JUN-2015');
+
+1 row created.
+
+
+SQL> REM order_list(order_no, pizza_id, qty)
+SQL> insert into order_list values('OP100','p001',3);
+
+1 row created.
+
+SQL> insert into order_list values('OP100','p002',2);
+
+1 row created.
+
+SQL> insert into order_list values('OP100','p003',2);
+
+1 row created.
+
+SQL> insert into order_list values('OP100','p004',5);
+
+1 row created.
+
+SQL> insert into order_list values('OP100','p005',4);
+
+1 row created.
+
+SQL> insert into order_list values('OP200','p003',2);
+
+1 row created.
+
+SQL> insert into order_list values('OP200','p001',6);
+
+1 row created.
+
+SQL> insert into order_list values('OP200','p004',8);
+
+1 row created.
+ 
+SQL> insert into order_list values('OP300','p003',3);
+
+1 row created.
+
+SQL> insert into order_list values('OP400','p001',3);
+
+1 row created.
+
+SQL> insert into order_list values('OP400','p004',1);
+
+1 row created.
+
+SQL> insert into order_list values('OP500','p003',6);
+
+1 row created.
+
+SQL> insert into order_list values('OP500','p004',5);
+
+1 row created.
+
+SQL> insert into order_list values('OP600','p002',3);
+
+1 row created.
+
+SQL> insert into order_list values('OP600','p003',2);
+
+1 row created.
+
+
+SQL> REM:1. For each pizza, display the total quantity ordered by the customers.
+SQL> SELECT pizza_id,sum(qty)
+  2  FROM PIZZA JOIN ORDER_LIST
+  3  USING (pizza_id)
+  4  GROUP BY pizza_id;
+
+PIZZ   SUM(QTY)                                                                 
+---- ----------                                                                 
+p004         19                                                                 
+p001         12                                                                 
+p002          5                                                                 
+p005          4                                                                 
+p003         15                                                                 
+
+
+SQL> REM:2. Find the pizza type(s) that is not delivered on the ordered day.
+SQL> SELECT p.pizza_type
+  2  FROM order_list ol
+  3  JOIN pizza p
+  4  ON (p.pizza_id=ol.pizza_id)
+  5  JOIN orders ord
+  6  ON (ord.order_no=ol.FK_order_no)
+  7  WHERE ord.order_date<>ord.delv_date;
+
+PIZZA_TYPE                                                                      
+----------------------------------------                                        
+pan                                                                             
+italian                                                                         
+spanish                                                                         
+italian                                                                         
+spanish                                                                         
+
+
+SQL> REM:3.Display the number of order(s) placed by each customer whether or not
+SQL> REM:he/she placed the order
+SQL> SELECT C.cust_id,COUNT(o.order_no) AS num_orders
+  2  FROM CUSTOMER C
+  3  LEFT OUTER JOIN ORDERS o ON C.cust_id = o.FK_cust_id
+  4  GROUP BY c.cust_id;
+
+CUST NUM_ORDERS                                                                 
+---- ----------                                                                 
+c002          2                                                                 
+c005          1                                                                 
+c006          1                                                                 
+c007          0                                                                 
+c001          2                                                                 
+c004          1                                                                 
+c003          1                                                                 
+
+7 rows selected.
+
+
+SQL> REM 4.Find the pairs of pizzas such that the ordered quantity of first pizza type is more than the second for the order OP100.
+SQL> SELECT OL1.pizza_id AS pizza1, OL2.pizza_id AS pizza2
+  2  FROM ORDER_LIST OL1
+  3  JOIN ORDER_LIST OL2 ON OL1.FK_order_no = OL2.FK_order_no
+  4  WHERE OL1.qty > OL2.qty AND OL1.FK_order_no = 'OP100';
+
+PIZZ PIZZ                                                                       
+---- ----                                                                       
+p005 p001                                                                       
+p004 p001                                                                       
+p005 p002                                                                       
+p004 p002                                                                       
+p001 p002                                                                       
+p005 p003                                                                       
+p004 p003                                                                       
+p001 p003                                                                       
+p004 p005                                                                       
+
+9 rows selected.
+
+
+SQL> SELECT AVG(qty) FROM ORDER_LIST;
+
+  AVG(QTY)                                                                      
+----------                                                                      
+3.66666667                                                                      
+
+
+SQL> REM :5.Display the details (order number, pizza type, customer name, qty) of the pizza with ordered quantity more than the average ordered quantity of
+SQL> REM:pizzas.
+SQL> SELECT o.order_no,p.pizza_type,c.cust_name,ol.qty
+  2  FROM order_list ol
+  3  JOIN pizza p
+  4  ON (p.pizza_id=ol.pizza_id)
+  5  JOIN orders o
+  6  ON (ol.FK_order_no=o.order_no)
+  7  JOIN customer c
+  8  ON (o.FK_cust_id=c.cust_id)
+  9  WHERE ol.qty>(SELECT avg(qty)
+ 10  		   FROM order_list);
+
+ORDER PIZZA_TYPE                                                                
+----- ----------------------------------------                                  
+CUST_NAME                                       QTY                             
+---------------------------------------- ----------                             
+OP100 spanish                                                                   
+Hari                                              5                             
+                                                                                
+OP100 supremo                                                                   
+Hari                                              4                             
+                                                                                
+OP200 pan                                                                       
+Prasanth                                          6                             
+                                                                                
+
+ORDER PIZZA_TYPE                                                                
+----- ----------------------------------------                                  
+CUST_NAME                                       QTY                             
+---------------------------------------- ----------                             
+OP200 spanish                                                                   
+Prasanth                                          8                             
+                                                                                
+OP500 italian                                                                   
+Hari                                              6                             
+                                                                                
+OP500 spanish                                                                   
+Hari                                              5                             
+                                                                                
+
+6 rows selected.
+
+
+SQL> REM :6.Find the customer(s) who ordered for more than one pizza type in each
+SQL> REM:order.
+SQL> SELECT DISTINCT(c.cust_name),o.order_no
+  2  FROM customer c,order_list ol,orders o,pizza p
+  3  WHERE c.cust_id=o.FK_cust_id AND o.order_no=ol.FK_order_no
+  4  AND o.order_no IN (SELECT DISTINCT(FK_order_no)
+  5  			FROM order_list
+  6  			GROUP BY FK_order_no
+  7  			HAVING count(DISTINCT(pizza_id))>1);
+
+CUST_NAME                                ORDER                                  
+---------------------------------------- -----                                  
+Prasanth                                 OP200                                  
+Prasanth                                 OP600                                  
+Hari                                     OP500                                  
+Jim                                      OP400                                  
+Hari                                     OP100                                  
+
+
+SQL> REM 7: Display the details (order number, pizza type, customer name, qty) of the pizza with
+SQL> REM:ordered quantity more than the average ordered quantity of each pizza type.
+SQL> SELECT o.order_no,p.pizza_type,c.cust_name,ol.qty
+  2  FROM pizza p,orders o,order_list ol,customer c
+  3  WHERE p.pizza_id=ol.pizza_id AND o.order_no=ol.FK_order_no AND o.FK_cust_id=c.cust_id
+  4  AND ol.qty>ANY (SELECT AVG(qty)
+  5  		 FROM order_list
+  6  		 GROUP BY pizza_id);
+
+ORDER PIZZA_TYPE                                                                
+----- ----------------------------------------                                  
+CUST_NAME                                       QTY                             
+---------------------------------------- ----------                             
+OP200 spanish                                                                   
+Prasanth                                          8                             
+                                                                                
+OP200 pan                                                                       
+Prasanth                                          6                             
+                                                                                
+OP500 italian                                                                   
+Hari                                              6                             
+                                                                                
+
+ORDER PIZZA_TYPE                                                                
+----- ----------------------------------------                                  
+CUST_NAME                                       QTY                             
+---------------------------------------- ----------                             
+OP500 spanish                                                                   
+Hari                                              5                             
+                                                                                
+OP100 spanish                                                                   
+Hari                                              5                             
+                                                                                
+OP100 supremo                                                                   
+Hari                                              4                             
+                                                                                
+
+ORDER PIZZA_TYPE                                                                
+----- ----------------------------------------                                  
+CUST_NAME                                       QTY                             
+---------------------------------------- ----------                             
+OP100 pan                                                                       
+Hari                                              3                             
+                                                                                
+OP600 grilled                                                                   
+Prasanth                                          3                             
+                                                                                
+OP400 pan                                                                       
+Jim                                               3                             
+                                                                                
+
+ORDER PIZZA_TYPE                                                                
+----- ----------------------------------------                                  
+CUST_NAME                                       QTY                             
+---------------------------------------- ----------                             
+OP300 italian                                                                   
+Neethu                                            3                             
+                                                                                
+
+10 rows selected.
+
+ 
+SQL> REM 8:Display the details (order number, pizza type, customer name, qty) of the pizza with ordered
+SQL> REM: quantity more than the average ordered quantity of its pizza type. (Use correlated)
+SQL> SELECT OL.FK_order_no, P.pizza_type, C.cust_name, OL.qty
+  2  FROM ORDER_LIST OL, ORDERS O , CUSTOMER C, PIZZA P
+  3  where OL.pizza_id = P.pizza_id and
+  4  OL.FK_order_no = O.order_no and C.cust_id=O.FK_cust_id
+  5  and OL.qty > (
+  6    SELECT AVG(OL2.qty)
+  7    FROM ORDER_LIST OL2
+  8    WHERE OL2.pizza_id = OL.pizza_id
+  9  );
+
+FK_OR PIZZA_TYPE                                                                
+----- ----------------------------------------                                  
+CUST_NAME                                       QTY                             
+---------------------------------------- ----------                             
+OP100 spanish                                                                   
+Hari                                              5                             
+                                                                                
+OP200 pan                                                                       
+Prasanth                                          6                             
+                                                                                
+OP200 spanish                                                                   
+Prasanth                                          8                             
+                                                                                
+
+FK_OR PIZZA_TYPE                                                                
+----- ----------------------------------------                                  
+CUST_NAME                                       QTY                             
+---------------------------------------- ----------                             
+OP500 italian                                                                   
+Hari                                              6                             
+                                                                                
+OP500 spanish                                                                   
+Hari                                              5                             
+                                                                                
+OP600 grilled                                                                   
+Prasanth                                          3                             
+                                                                                
+
+6 rows selected.
+
+
+SQL> REM: 9.Display the customer details who placed all pizza types in a single order
+SQL> SELECT DISTINCT(c.cust_name)
+  2  FROM customer c,orders o,order_list ol,pizza p
+  3  WHERE p.pizza_id=ol.pizza_id AND ol.FK_order_no=o.order_no AND c.cust_id=o.FK_cust_id
+  4  AND ol.FK_order_no=(SELECT FK_order_no
+  5  			 FROM order_list
+  6  			 GROUP BY FK_order_no
+  7  			 HAVING COUNT(DISTINCT(pizza_id))=5);
+
+CUST_NAME                                                                       
+----------------------------------------                                        
+Hari                                                                            
+
+SQL> REM:10.Display the order details that contains the pizza quantity more than the
+SQL> REM:average quantity of any of Pan or Italian pizza type. 
+SQL> SELECT FK_order_no as order_no
+  2  FROM order_list
+  3  GROUP BY (FK_order_no)
+  4  HAVING SUM(qty)>(SELECT AVG(QTY)
+  5  		     FROM order_list
+  6  		     WHERE pizza_id='p001')
+  7  UNION
+  8  SELECT FK_order_no as order_no
+  9  FROM order_list
+ 10  GROUP BY (FK_order_no)
+ 11  HAVING SUM(qty)>(SELECT AVG(QTY)
+ 12  		     FROM order_list
+ 13  		     WHERE pizza_id='p003');
+
+ORDER                                                                           
+-----                                                                           
+OP100                                                                           
+OP200                                                                           
+OP400                                                                           
+OP500                                                                           
+OP600                                                                           
+
+SQL> REM:11.Find the order(s) that contains Pan pizza but not the Italian pizza type.
+SQL> SELECT FK_order_no
+  2  FROM order_list
+  3  WHERE pizza_id='p001'
+  4  MINUS
+  5  SELECT FK_order_no
+  6  FROM order_list
+  7  WHERE pizza_id='p003';
+
+FK_OR                                                                           
+-----                                                                           
+OP400                                                                           
+
+ 
+SQL> REM:12.Display the customer(s) who ordered both Italian and Grilled pizza type. 
+SQL> SELECT c.cust_id,c.cust_name
+  2  FROM customer c,orders o,order_list ord
+  3  WHERE c.cust_id=o.FK_cust_id and o.order_no=ord.FK_order_no
+  4  and pizza_id='p002'
+  5  INTERSECT
+  6  SELECT c.cust_id,c.cust_name
+  7  FROM customer c,orders o,order_list ord
+  8  WHERE c.cust_id=o.FK_cust_id and o.order_no=ord.FK_order_no
+  9  and pizza_id='p003';
+
+CUST CUST_NAME                                                                  
+---- ----------------------------------------                                   
+c001 Hari                                                                       
+c002 Prasanth                                                                   
+
+SQL> SELECT c.cust_id,c.cust_name,SUM(ol.qty)
+  2  FROM orders ord
+  3  FULL OUTER JOIN customer c
+  4  ON c.cust_id=ord.FK_cust_id
+  5  FULL OUTER JOIN order_list ol
+  6  ON ord.order_no=ol.FK_order_no
+  7  group by c.cust_id,c.cust_name;
+
+CUST CUST_NAME                                SUM(OL.QTY)                       
+---- ---------------------------------------- -----------                       
+c006 Brinda                                                                     
+c001 Hari                                              27                       
+c004 Jim                                                4                       
+c002 Prasanth                                          21                       
+c003 Neethu                                             3                       
+c007 Ramkumar                                                                   
+c005 Sindhu                                                                     
+
+7 rows selected.
+
+SQL> spool off;

@@ -1,0 +1,295 @@
+SQL> @"D:\sem-3\sql\8\ex8.sql"
+
+Table dropped.
+
+
+Table dropped.
+
+
+Table dropped.
+
+
+Table dropped.
+
+
+Table dropped.
+
+
+Table created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+FULLROW                                                                         
+--------------------------------------------------------------------------------
+CR76, John Kay, PG4, 6 Lawrence St, Elmont, 2010-07-01, 2006-09-01, 700, CO40, T
+ina Murphy                                                                      
+                                                                                
+CR76, John Kay, PG16, 5 Nova Dr, East Meadow, 2006-08-31, 2008-09-01, 900, CO93,
+ Tony Shaw                                                                      
+                                                                                
+CR56, Aline Stewart, PG4, 6 Lawrence St, Elmont, 2002-09-01, 2004-08-01, 700, CO
+40, Tina Murphy                                                                 
+                                                                                
+CR56, Aline Stewart, PG36, 2 Manor Rd, Scarsdale, 2004-06-10, 2005-12-01, 750, C
+O93, Tony Shaw                                                                  
+
+FULLROW                                                                         
+--------------------------------------------------------------------------------
+                                                                                
+CR56, Aline Stewart, PG16, 5 Nova Dr, East Meadow, 2006-09-01, 2010-09-01, 900, 
+CO93, Tony Shaw                                                                 
+                                                                                
+
+
+Table created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+OWNER ONAME                                                                     
+----- --------------------------------------------------                        
+CO40  Tina Murphy                                                               
+CO93  Tony Shaw                                                                 
+
+
+Table created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+CLIEN CNAME                                                                     
+----- --------------------------------------------------                        
+CR76  John Kay                                                                  
+CR56  Aline Stewart                                                             
+
+
+Table created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+CLIEN PROPN RENTSTART RENTFINIS                                                 
+----- ----- --------- ---------                                                 
+CR76  PG4   01-JUL-10 31-AUG-06                                                 
+CR76  PG16  01-SEP-06 01-SEP-08                                                 
+CR56  PG4   01-SEP-02 10-JUN-04                                                 
+CR56  PG36  01-JAN-04 01-DEC-05                                                 
+CR56  PG16  01-AUG-06 01-SEP-10                                                 
+
+
+Table created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+PROPN                                                                           
+-----                                                                           
+PADDR                                                                           
+--------------------------------------------------------------------------------
+      RENT OWNER                                                                
+---------- -----                                                                
+PG4                                                                             
+6 Lawrence St, Elmont                                                           
+       700 CO40                                                                 
+                                                                                
+PG16                                                                            
+5 Nova Dr, East Meadow                                                          
+       900 CO93                                                                 
+
+PROPN                                                                           
+-----                                                                           
+PADDR                                                                           
+--------------------------------------------------------------------------------
+      RENT OWNER                                                                
+---------- -----                                                                
+                                                                                
+PG36                                                                            
+2 Manor Rd, Scarsdale                                                           
+       750 CO93                                                                 
+                                                                                
+
+
+CLIEN CNAME                                              PROPN                  
+----- -------------------------------------------------- -----                  
+PADDR                                                                           
+--------------------------------------------------------------------------------
+      RENT RENTSTART RENTFINIS                                                  
+---------- --------- ---------                                                  
+ONAME                                              OWNER                        
+-------------------------------------------------- -----                        
+CR76  John Kay                                           PG16                   
+5 Nova Dr, East Meadow                                                          
+       900 01-SEP-06 01-SEP-08                                                  
+Tony Shaw                                          CO93                         
+                                                                                
+
+CLIEN CNAME                                              PROPN                  
+----- -------------------------------------------------- -----                  
+PADDR                                                                           
+--------------------------------------------------------------------------------
+      RENT RENTSTART RENTFINIS                                                  
+---------- --------- ---------                                                  
+ONAME                                              OWNER                        
+-------------------------------------------------- -----                        
+CR76  John Kay                                           PG4                    
+6 Lawrence St, Elmont                                                           
+       700 01-JUL-10 31-AUG-06                                                  
+Tina Murphy                                        CO40                         
+                                                                                
+
+CLIEN CNAME                                              PROPN                  
+----- -------------------------------------------------- -----                  
+PADDR                                                                           
+--------------------------------------------------------------------------------
+      RENT RENTSTART RENTFINIS                                                  
+---------- --------- ---------                                                  
+ONAME                                              OWNER                        
+-------------------------------------------------- -----                        
+CR56  Aline Stewart                                      PG16                   
+5 Nova Dr, East Meadow                                                          
+       900 01-AUG-06 01-SEP-10                                                  
+Tony Shaw                                          CO93                         
+                                                                                
+
+CLIEN CNAME                                              PROPN                  
+----- -------------------------------------------------- -----                  
+PADDR                                                                           
+--------------------------------------------------------------------------------
+      RENT RENTSTART RENTFINIS                                                  
+---------- --------- ---------                                                  
+ONAME                                              OWNER                        
+-------------------------------------------------- -----                        
+CR56  Aline Stewart                                      PG36                   
+2 Manor Rd, Scarsdale                                                           
+       750 01-JAN-04 01-DEC-05                                                  
+Tony Shaw                                          CO93                         
+                                                                                
+
+CLIEN CNAME                                              PROPN                  
+----- -------------------------------------------------- -----                  
+PADDR                                                                           
+--------------------------------------------------------------------------------
+      RENT RENTSTART RENTFINIS                                                  
+---------- --------- ---------                                                  
+ONAME                                              OWNER                        
+-------------------------------------------------- -----                        
+CR56  Aline Stewart                                      PG4                    
+6 Lawrence St, Elmont                                                           
+       700 01-SEP-02 10-JUN-04                                                  
+Tina Murphy                                        CO40                         
+                                                                                
+
+
+CLIEN CNAME                                              PROPN                  
+----- -------------------------------------------------- -----                  
+PADDR                                                                           
+--------------------------------------------------------------------------------
+RNTST     RNTFNSH         RENT OWNER                                            
+--------- --------- ---------- -----                                            
+ONAME                                                                           
+--------------------------------------------------                              
+CR76  John Kay                                           PG4                    
+6 Lawrence St, Elmont                                                           
+01-JUL-10 01-SEP-06        700 CO40                                             
+Tina Murphy                                                                     
+                                                                                
+
+CLIEN CNAME                                              PROPN                  
+----- -------------------------------------------------- -----                  
+PADDR                                                                           
+--------------------------------------------------------------------------------
+RNTST     RNTFNSH         RENT OWNER                                            
+--------- --------- ---------- -----                                            
+ONAME                                                                           
+--------------------------------------------------                              
+CR76  John Kay                                           PG16                   
+5 Nova Dr, East Meadow                                                          
+31-AUG-06 01-SEP-08        900 CO93                                             
+Tony Shaw                                                                       
+                                                                                
+
+CLIEN CNAME                                              PROPN                  
+----- -------------------------------------------------- -----                  
+PADDR                                                                           
+--------------------------------------------------------------------------------
+RNTST     RNTFNSH         RENT OWNER                                            
+--------- --------- ---------- -----                                            
+ONAME                                                                           
+--------------------------------------------------                              
+CR56  Aline Stewart                                      PG4                    
+6 Lawrence St, Elmont                                                           
+01-SEP-02 01-AUG-04        700 CO40                                             
+Tina Murphy                                                                     
+                                                                                
+
+CLIEN CNAME                                              PROPN                  
+----- -------------------------------------------------- -----                  
+PADDR                                                                           
+--------------------------------------------------------------------------------
+RNTST     RNTFNSH         RENT OWNER                                            
+--------- --------- ---------- -----                                            
+ONAME                                                                           
+--------------------------------------------------                              
+CR56  Aline Stewart                                      PG36                   
+2 Manor Rd, Scarsdale                                                           
+10-JUN-04 01-DEC-05        750 CO93                                             
+Tony Shaw                                                                       
+                                                                                
+
+CLIEN CNAME                                              PROPN                  
+----- -------------------------------------------------- -----                  
+PADDR                                                                           
+--------------------------------------------------------------------------------
+RNTST     RNTFNSH         RENT OWNER                                            
+--------- --------- ---------- -----                                            
+ONAME                                                                           
+--------------------------------------------------                              
+CR56  Aline Stewart                                      PG16                   
+5 Nova Dr, East Meadow                                                          
+01-SEP-06 01-SEP-10        900 CO93                                             
+Tony Shaw                                                                       
+                                                                                
+
+SQL> spool off;

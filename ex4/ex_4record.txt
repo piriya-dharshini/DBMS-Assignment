@@ -1,0 +1,364 @@
+SQL> set echo on;
+SQL> @"D:\sem-3\sql\ex_4\ex_4.sql"
+SQL> REM:dropping tables
+SQL> drop table customer cascade constraints;
+
+Table dropped.
+
+SQL> drop table pizza cascade constraints;
+
+Table dropped.
+
+SQL> drop table orders cascade constraints;
+
+Table dropped.
+
+SQL> drop table order_list cascade constraints;
+
+Table dropped.
+
+SQL> REM:Creating table customer,pizza
+SQL> REM:order,order_list
+SQL> CREATE TABLE customer(
+  2  	     cust_id varchar(4) PRIMARY KEY,
+  3  	     cust_name varchar(40),
+  4  	     address varchar(200),
+  5  	     phone number(10)
+  6  	     );
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE pizza(
+  2  	     pizza_id varchar(4) PRIMARY KEY,
+  3  	     pizza_type varchar(40),
+  4  	     unit_prize number(3)
+  5  	     );
+
+Table created.
+
+SQL> CREATE TABLE orders(
+  2  	     order_no varchar(6) PRIMARY KEY,
+  3  	     FK_cust_id varchar(4),
+  4  	     FOREIGN KEY(FK_cust_id) REFERENCES customer(cust_id),
+  5  	     order_date date,
+  6  	     delv_date date
+  7  	     );
+
+Table created.
+
+SQL> CREATE TABLE order_list(
+  2  	     FK_order_no varchar(6),
+  3  	     FOREIGN KEY(FK_order_no) REFERENCES orders(order_no),
+  4  	     pizza_id varchar(4),
+  5  	     PRIMARY KEY(FK_order_no,pizza_id),
+  6  	     qty number NOT NULL
+  7  	     );
+
+Table created.
+ 
+SQL> REm customer(cust_id, cust_name, address, phone)
+SQL> REM pizza (pizza_id, pizza_type, unit_price)
+SQL> REM orders(order_no, cust_id, order_date ,delv_date, total_amt)
+SQL> REM order_list(order_no, pizza_id, qty)
+SQL> REM ------------------------------------------------------------------------------------------
+SQL> REM customer(cust_id, cust_name,address,phone)
+SQL> insert into customer values('c001','Hari','32 RING ROAD,ALWARPET',9001200031);
+
+1 row created.
+
+SQL> insert into customer values('c002','Prasanth','42 bull ROAD,numgambakkam',9444120003);
+
+1 row created.
+
+SQL> insert into customer values('c003','Neethu','12a RING ROAD,ALWARPET',9840112003);
+
+1 row created.
+
+SQL> insert into customer values('c004','Jim','P.H ROAD,Annanagar',9845712993);
+
+1 row created.
+
+SQL> insert into customer values('c005','Sindhu','100 feet ROAD,vadapalani',9840166677);
+
+1 row created.
+
+SQL> insert into customer values('c006','Brinda','GST ROAD, TAMBARAM', 9876543210);
+
+1 row created.
+
+SQL> insert into customer values('c007','Ramkumar','2nd cross street, Perambur',8566944453);
+
+1 row created.
+
+SQL> REM pizza (pizza_id, pizza_type, unit_price) 
+SQL> insert into pizza values('p001','pan',130);
+
+1 row created.
+
+SQL> insert into pizza values('p002','grilled',230);
+
+1 row created.
+
+SQL> insert into pizza values('p003','italian',200);
+
+1 row created.
+
+SQL> insert into pizza values('p004','spanish',260);
+
+1 row created.
+
+SQL> insert into pizza values('p005','supremo',250);
+
+1 row created.
+
+
+SQL> REM orders(order_no, cust_id, order_date ,delv_date)
+SQL> insert into orders values('OP100','c001','28-JUN-2015','28-JUN-2015');
+
+1 row created.
+
+SQL> insert into orders values('OP200','c002','28-JUN-2015','29-JUN-2015');
+
+1 row created.
+
+SQL> insert into orders values('OP300','c003','29-JUN-2015','29-JUN-2015');
+
+1 row created.
+
+SQL> insert into orders values('OP400','c004','29-JUN-2015','29-JUN-2015');
+
+1 row created.
+
+SQL> insert into orders values('OP500','c001','29-JUN-2015','30-JUN-2015');
+
+1 row created.
+
+SQL> insert into orders values('OP600','c002','29-JUN-2015','29-JUN-2015');
+
+1 row created.
+
+SQL> insert into orders values('OP700','c005','30-JUN-2015','30-JUN-2015');
+
+1 row created.
+
+SQL> insert into orders values('OP800','c006','30-JUN-2015','30-JUN-2015');
+
+1 row created.
+
+SQL> REM order_list(order_no, pizza_id, qty)
+SQL> insert into order_list values('OP100','p001',3);
+
+1 row created.
+
+SQL> insert into order_list values('OP100','p002',2);
+
+1 row created.
+
+SQL> insert into order_list values('OP100','p003',2);
+
+1 row created.
+
+SQL> insert into order_list values('OP100','p004',5);
+
+1 row created.
+
+SQL> insert into order_list values('OP100','p005',4);
+
+1 row created.
+
+SQL> insert into order_list values('OP200','p003',2);
+
+1 row created.
+
+SQL> insert into order_list values('OP200','p001',6);
+
+1 row created.
+
+SQL> insert into order_list values('OP200','p004',8);
+
+1 row created.
+
+
+SQL> insert into order_list values('OP300','p003',3);
+
+1 row created.
+
+SQL> insert into order_list values('OP400','p001',3);
+
+1 row created.
+
+SQL> insert into order_list values('OP400','p004',1);
+
+1 row created.
+
+ 
+SQL> insert into order_list values('OP500','p003',6);
+
+1 row created.
+
+SQL> insert into order_list values('OP500','p004',5);
+
+1 row created.
+
+
+SQL> insert into order_list values('OP600','p002',3);
+
+1 row created.
+
+SQL> insert into order_list values('OP600','p003',2);
+
+1 row created.
+
+
+SQL> REM:1. An user is interested to have list of pizza’s in the range of REM:Rs.200-250. Create a view Pizza_200_250 which keeps the pizza details REM:that has the price in the range of 200 to 250. 
+SQL> Drop view Pizza_200_250;
+
+View dropped.
+
+SQL> Drop view Pizza_Type_Order;
+
+View dropped.
+
+
+SQL> CREATE VIEW Pizza_200_250
+  2  AS (SELECT * FROM PIZZA
+  3  WHERE unit_prize BETWEEN 200 AND 250
+  4  );
+
+View created.
+
+SQL> SELECT * FROM Pizza_200_250;
+
+PIZZ PIZZA_TYPE                               UNIT_PRIZE                        
+---- ---------------------------------------- ----------                        
+p002 grilled                                         230                        
+p003 italian                                         200                        
+p005 supremo                                         250                        
+
+SQL> REM:2.Pizza company owner is interested to know the number of pizza types
+SQL> REM:ordered in each order. Create a view Pizza_Type_Order that lists the
+SQL> REM:number of pizza types ordered in each order.
+SQL> CREATE VIEW Pizza_Type_Order
+  2  AS (SELECT FK_order_no,count(*) as no_pizzatype
+  3  FROM order_list
+  4  group by FK_order_no )
+  5  ;
+
+View created.
+
+
+SQL> SELECT * FROM Pizza_type_order;
+
+FK_ORD NO_PIZZATYPE                                                             
+------ ------------                                                             
+OP100             5                                                             
+OP200             3                                                             
+OP300             1                                                             
+OP400             2                                                             
+OP500             2                                                             
+OP600             2                                                             
+
+6 rows selected.
+
+ 
+SQL> REM:3. To know about the customers of Spanish pizza, create a view
+SQL> REM:Spanish_Customers that list out the customer id, name, order_no of
+SQL> REM:customers who ordered Spanish type.
+SQL> CREATE VIEW Spanish_Customers
+  2  AS (SELECT c.cust_id,c.cust_name,o.order_no
+  3  FROM pizza p,orders o,customer c,order_list ord
+  4  WHERE c.cust_id=o.FK_cust_id AND o.order_no=ord.FK_order_no AND p.pizza_id=ord.pizza_id
+  5  AND p.pizza_type='spanish');
+CREATE VIEW Spanish_Customers
+            *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+ 
+SQL> select * from spanish_customers;
+
+CUST CUST_NAME                                ORDER_                            
+---- ---------------------------------------- ------                            
+c001 Hari                                     OP500                             
+c001 Hari                                     OP100                             
+c002 Prasanth                                 OP200                             
+c004 Jim                                      OP400                             
+
+
+SQL> REM:4. Create a sequence named Order_No_Seq which generates the Order
+SQL> REM:number starting from 1001, increment by 1, to a maximum of 9999.
+SQL> REM:Include options of cycle, cache and order. Use this sequence to REM:populate the rows of Order_List table.
+
+SQL> DROP SEQUENCE Order_No_Seq;
+
+Sequence dropped.
+
+
+SQL> CREATE SEQUENCE Order_No_Seq
+  2  start with 1001
+  3  increment by 1
+  4  minvalue 1001
+  5  maxvalue 9999
+  6  cycle
+  7  cache 5
+  8  order;
+
+Sequence created.
+
+ 
+SQL> INSERT INTO orders VALUES
+  2  ('OP1001','c002','28-JUN-2015','30-JUN-2015');
+
+1 row created.
+
+SQL> SELECT * FROM orders;
+
+ORDER_ FK_C ORDER_DAT DELV_DATE                                                 
+------ ---- --------- ---------                                                 
+OP100  c001 28-JUN-15 28-JUN-15                                                 
+OP200  c002 28-JUN-15 29-JUN-15                                                 
+OP300  c003 29-JUN-15 29-JUN-15                                                 
+OP400  c004 29-JUN-15 29-JUN-15                                                 
+OP500  c001 29-JUN-15 30-JUN-15                                                 
+OP600  c002 29-JUN-15 29-JUN-15                                                 
+OP700  c005 30-JUN-15 30-JUN-15                                                 
+OP800  c006 30-JUN-15 30-JUN-15                                                 
+OP1001 c002 28-JUN-15 30-JUN-15                                                 
+
+9 rows selected.
+
+SQL> INSERT into order_list VALUES
+  2  (CONCAT('OP',Order_No_Seq.nextval),'p004',7);
+
+1 row created.
+ 
+SQL> SELECT * FROM order_list;
+
+FK_ORD PIZZ        QTY                                                          
+------ ---- ----------                                                          
+OP100  p001          3                                                          
+OP100  p002          2                                                          
+OP100  p003          2                                                          
+OP100  p004          5                                                          
+OP100  p005          4                                                          
+OP200  p003          2                                                          
+OP200  p001          6                                                          
+OP200  p004          8                                                          
+OP300  p003          3                                                          
+OP400  p001          3                                                          
+OP400  p004          1                                                          
+
+FK_ORD PIZZ        QTY                                                          
+------ ---- ----------                                                          
+OP500  p003          6                                                          
+OP500  p004          5                                                          
+OP600  p002          3                                                          
+OP600  p003          2                                                          
+OP1001 p004          7                                                          
+
+16 rows selected.
+
+
+SQL> spool off;
