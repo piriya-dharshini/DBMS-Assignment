@@ -54,7 +54,7 @@ insert into customer values('c006','Brinda','GST ROAD, TAMBARAM', 9876543210);
 insert into customer values('c007','Ramkumar','2nd cross street, Perambur',8566944453);
 
 
-
+REM CHANGE
 REM pizza (pizza_id, pizza_type, unit_price)
 
 insert into pizza values('p001','pan',130);
@@ -100,7 +100,7 @@ insert into order_list values('OP500','p003',6);
 insert into order_list values('OP500','p004',5);
 
 
-insert into order_list values('OP600','p002',3);
+insert into order_list values('OP600','p002',3);																			
 insert into order_list values('OP600','p003',2);
 
 

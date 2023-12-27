@@ -1,0 +1,974 @@
+SQL> set echo on;
+SQL> @"D:\sem-3\sql\ex-2\recordex2.sql"
+SQL> REM:DML BASICS
+SQL> REM:DROPPING RELATIONS
+SQL> 
+SQL> drop table CLASSES cascade constraints;
+
+Table dropped.
+
+SQL> drop table employees cascade constraints;
+
+Table dropped.
+
+SQL> 
+SQL> REM:CREATING THE RELATION CLASSES
+SQL> 
+SQL> create table CLASSES(
+  2  class varchar(30) primary key,
+  3  type varchar(2),
+  4  CHECK(type in ('bc','bb')),
+  5  country varchar(10),
+  6  numGuns int,
+  7  bore int,
+  8  displacement int
+  9  );
+
+Table created.
+
+SQL> 
+SQL> REM:1. Populate the relation with the above set of tuples using INSERT clause.
+SQL> 
+SQL> insert into classes(class,type,country,numGuns,bore,displacement) values(
+  2  'Bismark',
+  3  'bb',
+  4  'Germany',
+  5  8,
+  6  14,
+  7  32000
+  8  );
+
+1 row created.
+
+SQL> 
+SQL> insert into classes(class,type,country,numGuns,bore,displacement) values(
+  2  'Iowa',
+  3  'bb',
+  4  'USA',
+  5  9,
+  6  16,
+  7  46000
+  8  );
+
+1 row created.
+
+SQL> 
+SQL> insert into classes(class,type,country,numGuns,bore,displacement) values(
+  2  'Kongo',
+  3  'bc',
+  4  'Japan',
+  5  8,
+  6  15,
+  7  42000
+  8  );
+
+1 row created.
+
+SQL> 
+SQL> insert into classes(class,type,country,numGuns,bore,displacement) values(
+  2  'North California',
+  3  'bb',
+  4  'USA',
+  5  9,
+  6  16,
+  7  37000
+  8  );
+
+1 row created.
+
+SQL> 
+SQL> insert into classes(class,type,country,numGuns,bore,displacement) values(
+  2  'Revenge',
+  3  'bb',
+  4  'Gt.Britain',
+  5  8,
+  6  15,
+  7  29000
+  8  );
+
+1 row created.
+
+SQL> 
+SQL> insert into classes(class,type,country,numGuns,bore,displacement) values(
+  2  'Renown',
+  3  'bc',
+  4  'Gt.Britain',
+  5  6,
+  6  15,
+  7  32000
+  8  );
+
+1 row created.
+
+SQL> 
+SQL> REM:2. Display the populated relation.
+SQL> 
+SQL> select * from classes;
+
+CLASS                          TY COUNTRY       NUMGUNS       BORE DISPLACEMENT 
+------------------------------ -- ---------- ---------- ---------- ------------ 
+Bismark                        bb Germany             8         14        32000 
+Iowa                           bb USA                 9         16        46000 
+Kongo                          bc Japan               8         15        42000 
+North California               bb USA                 9         16        37000 
+Revenge                        bb Gt.Britain          8         15        29000 
+Renown                         bc Gt.Britain          6         15        32000 
+
+6 rows selected.
+
+SQL> REM:3. Mark an intermediate point here in this transaction.
+SQL> 
+SQL> SAVEPOINT SP1;
+
+Savepoint created.
+
+SQL> 
+SQL> REM:4. For the battleships having at least 9 number of guns or the ships 
+REM:with at least 15 inch bore, increase the displacement by 10%.
+SQL> 
+SQL> UPDATE classes
+  2  SET displacement=(displacement+0.1*displacement)
+  3  WHERE (numGuns=9 or bore>=15);
+
+5 rows updated.
+
+SQL> 
+SQL> select * from classes;
+
+CLASS                          TY COUNTRY       NUMGUNS       BORE DISPLACEMENT 
+------------------------------ -- ---------- ---------- ---------- ------------ 
+Bismark                        bb Germany             8         14        32000 
+Iowa                           bb USA                 9         16        50600 
+Kongo                          bc Japan               8         15        46200 
+North California               bb USA                 9         16        40700 
+Revenge                        bb Gt.Britain          8         15        31900 
+Renown                         bc Gt.Britain          6         15        35200 
+
+6 rows selected.
+
+SQL> 
+SQL> REM:5. Delete Kongo class of ship from Classes table.
+SQL> 
+SQL> DELETE FROM classes
+  2  WHERE class='Kongo';
+
+1 row deleted.
+
+SQL> 
+SQL> REM:6. Display your changes to the table.
+SQL> 
+SQL> select* from classes;
+
+CLASS                          TY COUNTRY       NUMGUNS       BORE DISPLACEMENT 
+------------------------------ -- ---------- ---------- ---------- ------------ 
+Bismark                        bb Germany             8         14        32000 
+Iowa                           bb USA                 9         16        50600 
+North California               bb USA                 9         16        40700 
+Revenge                        bb Gt.Britain          8         15        31900 
+Renown                         bc Gt.Britain          6         15        35200 
+
+SQL> 
+SQL> REM:7. Discard the recent updates to the relation without discarding the REM:earlier INSERT operation(s).
+SQL> ROLLBACK TO SP1;
+
+Rollback complete.
+
+SQL> 
+SQL> select* from classes;
+
+CLASS                          TY COUNTRY       NUMGUNS       BORE DISPLACEMENT 
+------------------------------ -- ---------- ---------- ---------- ------------ 
+Bismark                        bb Germany             8         14        32000 
+Iowa                           bb USA                 9         16        46000 
+Kongo                          bc Japan               8         15        42000 
+North California               bb USA                 9         16        37000 
+Revenge                        bb Gt.Britain          8         15        29000 
+Renown                         bc Gt.Britain          6         15        32000 
+
+6 rows selected.
+
+SQL> 
+SQL> REM:8. Commit the changes.
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> 
+SQL> REM ********************************************************************
+SQL> REM SSN COLLEGE OF ENGINEERING (An Autonomous Institution)
+SQL> REM DEPARTMENT OF INFORMATION TECHNOLOGY
+SQL> REM ********************************************************************
+SQL> REM UIT2311 - DATABASE TECHNOLOGY LAB | III SEMESTER
+SQL> REM ASSIGNMENT-2: DML FUNDAMENTALS
+SQL> REM ********************************************************************
+SQL> REM Note: Do not MODIFY/UPDATE the contents in this file. Use as it is.
+SQL> 
+SQL> REM Create the EMPLOYEES table to hold the employee personnel
+SQL> REM information for the company.
+SQL> REM HR.EMPLOYEES has a self referencing foreign key to this table.
+SQL> 
+SQL> Prompt ******  Creating EMPLOYEES table ....
+******  Creating EMPLOYEES table ....
+SQL> 
+SQL> CREATE TABLE employees
+  2  	 ( employee_id	  NUMBER(6)
+  3  	 , first_name	  VARCHAR2(20)
+  4  	 , last_name	  VARCHAR2(25)
+  5  	      CONSTRAINT     emp_last_name_nn  NOT NULL
+  6  	 , email	  VARCHAR2(25)
+  7  	     CONSTRAINT     emp_email_nn  NOT NULL
+  8  	 , phone_number   VARCHAR2(20)
+  9  	 , hire_date	  DATE
+ 10  	     CONSTRAINT     emp_hire_date_nn  NOT NULL
+ 11  	 , job_id	  VARCHAR2(10)
+ 12  	     CONSTRAINT     emp_job_nn	NOT NULL
+ 13  	 , salary	  NUMBER(8,2)
+ 14  	 , commission_pct NUMBER(2,2)
+ 15  	 , manager_id	  NUMBER(6)
+ 16  	 , department_id  NUMBER(4)
+ 17  	 , CONSTRAINT	  emp_salary_min
+ 18  			  CHECK (salary > 0)
+ 19  	 , CONSTRAINT	  emp_email_uk
+ 20  			  UNIQUE (email)
+ 21  	 ) ;
+
+Table created.
+
+SQL> 
+SQL> ALTER TABLE employees
+  2  ADD ( CONSTRAINT	  emp_emp_id_pk
+  3  			  PRIMARY KEY (employee_id)
+  4  	 , CONSTRAINT	  emp_manager_fk
+  5  			  FOREIGN KEY (manager_id)
+  6  			   REFERENCES employees
+  7  	 ) ;
+
+Table altered.
+
+SQL> 
+SQL> REM ***************************insert data into the EMPLOYEES table
+SQL> 
+SQL> Prompt ******  Populating EMPLOYEES table ....
+******  Populating EMPLOYEES table ....
+SQL> 
+SQL> INSERT INTO employees VALUES
+  2  	     ( 100
+  3  	     , 'Steven'
+  4  	     , 'King'
+  5  	     , 'SKING'
+  6  	     , '515.123.4567'
+  7  	     , TO_DATE('17-JUN-1987', 'dd-MON-yyyy')
+  8  	     , 'AD_PRES'
+  9  	     , 24000
+ 10  	     , NULL
+ 11  	     , NULL
+ 12  	     , 90
+ 13  	     );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO employees VALUES
+  2  	     ( 101
+  3  	     , 'Neena'
+  4  	     , 'Kochhar'
+  5  	     , 'NKOCHHAR'
+  6  	     , '515.123.4568'
+  7  	     , TO_DATE('21-SEP-1989', 'dd-MON-yyyy')
+  8  	     , 'AD_VP'
+  9  	     , 17000
+ 10  	     , NULL
+ 11  	     , 100
+ 12  	     , 90
+ 13  	     );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO employees VALUES
+  2  	     ( 102
+  3  	     , 'Lex'
+  4  	     , 'De Haan'
+  5  	     , 'LDEHAAN'
+  6  	     , '515.123.4569'
+  7  	     , TO_DATE('13-JAN-1993', 'dd-MON-yyyy')
+  8  	     , 'AD_VP'
+  9  	     , 17000
+ 10  	     , NULL
+ 11  	     , 100
+ 12  	     , 90
+ 13  	     );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO employees VALUES
+  2  	     ( 103
+  3  	     , 'Alexander'
+  4  	     , 'Hunold'
+  5  	     , 'AHUNOLD'
+  6  	     , '590.423.4567'
+  7  	     , TO_DATE('03-JAN-1990', 'dd-MON-yyyy')
+  8  	     , 'IT_PROG'
+  9  	     , 9000
+ 10  	     , NULL
+ 11  	     , 102
+ 12  	     , 60
+ 13  	     );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO employees VALUES
+  2  	     ( 104
+  3  	     , 'Bruce'
+  4  	     , 'Ernst'
+  5  	     , 'BERNST'
+  6  	     , '590.423.4568'
+  7  	     , TO_DATE('21-MAY-1991', 'dd-MON-yyyy')
+  8  	     , 'IT_PROG'
+  9  	     , 6000
+ 10  	     , NULL
+ 11  	     , 103
+ 12  	     , 60
+ 13  	     );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO employees VALUES
+  2  	     ( 105
+  3  	     , 'David'
+  4  	     , 'Austin'
+  5  	     , 'DAUSTIN'
+  6  	     , '590.423.4569'
+  7  	     , TO_DATE('25-JUN-1997', 'dd-MON-yyyy')
+  8  	     , 'IT_PROG'
+  9  	     , 4800
+ 10  	     , NULL
+ 11  	     , 103
+ 12  	     , 60
+ 13  	     );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO employees VALUES
+  2  	     ( 106
+  3  	     , 'Valli'
+  4  	     , 'Pataballa'
+  5  	     , 'VPATABAL'
+  6  	     , '590.423.4560'
+  7  	     , TO_DATE('05-FEB-1998', 'dd-MON-yyyy')
+  8  	     , 'IT_PROG'
+  9  	     , 4800
+ 10  	     , NULL
+ 11  	     , 103
+ 12  	     , 60
+ 13  	     );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO employees VALUES
+  2  	     ( 107
+  3  	     , 'Diana'
+  4  	     , 'Lorentz'
+  5  	     , 'DLORENTZ'
+  6  	     , '590.423.5567'
+  7  	     , TO_DATE('07-FEB-1999', 'dd-MON-yyyy')
+  8  	     , 'IT_PROG'
+  9  	     , 4200
+ 10  	     , NULL
+ 11  	     , 103
+ 12  	     , 60
+ 13  	     );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO employees VALUES
+  2  	     ( 124
+  3  	     , 'Kevin'
+  4  	     , 'Mourgos'
+  5  	     , 'KMOURGOS'
+  6  	     , '650.123.5234'
+  7  	     , TO_DATE('16-NOV-1999', 'dd-MON-yyyy')
+  8  	     , 'ST_MAN'
+  9  	     , 5800
+ 10  	     , NULL
+ 11  	     , 100
+ 12  	     , 50
+ 13  	     );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO employees VALUES
+  2  	     ( 141
+  3  	     , 'Trenna'
+  4  	     , 'Rajs'
+  5  	     , 'TRAJS'
+  6  	     , '650.121.8009'
+  7  	     , TO_DATE('17-OCT-1995', 'dd-MON-yyyy')
+  8  	     , 'ST_CLERK'
+  9  	     , 3500
+ 10  	     , NULL
+ 11  	     , 124
+ 12  	     , 50
+ 13  	     );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO employees VALUES
+  2  	     ( 142
+  3  	     , 'Curtis'
+  4  	     , 'Davies'
+  5  	     , 'CDAVIES'
+  6  	     , '650.121.2994'
+  7  	     , TO_DATE('29-JAN-1997', 'dd-MON-yyyy')
+  8  	     , 'ST_CLERK'
+  9  	     , 3100
+ 10  	     , NULL
+ 11  	     , 124
+ 12  	     , 50
+ 13  	     );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO employees VALUES
+  2  	     ( 143
+  3  	     , 'Randall'
+  4  	     , 'Matos'
+  5  	     , 'RMATOS'
+  6  	     , '650.121.2874'
+  7  	     , TO_DATE('15-MAR-1998', 'dd-MON-yyyy')
+  8  	     , 'ST_CLERK'
+  9  	     , 2600
+ 10  	     , NULL
+ 11  	     , 124
+ 12  	     , 50
+ 13  	     );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO employees VALUES
+  2  	     ( 144
+  3  	     , 'Peter'
+  4  	     , 'Vargas'
+  5  	     , 'PVARGAS'
+  6  	     , '650.121.2004'
+  7  	     , TO_DATE('09-JUL-1998', 'dd-MON-yyyy')
+  8  	     , 'ST_CLERK'
+  9  	     , 2500
+ 10  	     , NULL
+ 11  	     , 124
+ 12  	     , 50
+ 13  	     );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO employees VALUES
+  2  	     ( 149
+  3  	     , 'Eleni'
+  4  	     , 'Zlotkey'
+  5  	     , 'EZLOTKEY'
+  6  	     , '011.44.1344.429018'
+  7  	     , TO_DATE('29-JAN-2000', 'dd-MON-yyyy')
+  8  	     , 'SA_MAN'
+  9  	     , 10500
+ 10  	     , .2
+ 11  	     , 100
+ 12  	     , 80
+ 13  	     );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO employees VALUES
+  2  	     ( 174
+  3  	     , 'Ellen'
+  4  	     , 'Abel'
+  5  	     , 'EABEL'
+  6  	     , '011.44.1644.429267'
+  7  	     , TO_DATE('11-MAY-1996', 'dd-MON-yyyy')
+  8  	     , 'SA_REP'
+  9  	     , 11000
+ 10  	     , .30
+ 11  	     , 149
+ 12  	     , 80
+ 13  	     );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO employees VALUES
+  2  	     ( 176
+  3  	     , 'Jonathon'
+  4  	     , 'Taylor'
+  5  	     , 'JTAYLOR'
+  6  	     , '011.44.1644.429265'
+  7  	     , TO_DATE('24-MAR-1998', 'dd-MON-yyyy')
+  8  	     , 'SA_REP'
+  9  	     , 8600
+ 10  	     , .20
+ 11  	     , 149
+ 12  	     , 80
+ 13  	     );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO employees VALUES
+  2  	     ( 178
+  3  	     , 'Kimberely'
+  4  	     , 'Grant'
+  5  	     , 'KGRANT'
+  6  	     , '011.44.1644.429263'
+  7  	     , TO_DATE('24-MAY-1999', 'dd-MON-yyyy')
+  8  	     , 'SA_REP'
+  9  	     , 7000
+ 10  	     , .15
+ 11  	     , 149
+ 12  	     , NULL
+ 13  	     );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO employees VALUES
+  2  	     ( 200
+  3  	     , 'Jennifer'
+  4  	     , 'Whalen'
+  5  	     , 'JWHALEN'
+  6  	     , '515.123.4444'
+  7  	     , TO_DATE('17-SEP-1987', 'dd-MON-yyyy')
+  8  	     , 'AD_ASST'
+  9  	     , 4400
+ 10  	     , NULL
+ 11  	     , 101
+ 12  	     , 10
+ 13  	     );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO employees VALUES
+  2  	     ( 201
+  3  	     , 'Michael'
+  4  	     , 'Hartstein'
+  5  	     , 'MHARTSTE'
+  6  	     , '515.123.5555'
+  7  	     , TO_DATE('17-FEB-1996', 'dd-MON-yyyy')
+  8  	     , 'MK_MAN'
+  9  	     , 13000
+ 10  	     , NULL
+ 11  	     , 100
+ 12  	     , 20
+ 13  	     );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO employees VALUES
+  2  	     ( 202
+  3  	     , 'Pat'
+  4  	     , 'Fay'
+  5  	     , 'PFAY'
+  6  	     , '603.123.6666'
+  7  	     , TO_DATE('17-AUG-1997', 'dd-MON-yyyy')
+  8  	     , 'MK_REP'
+  9  	     , 6000
+ 10  	     , NULL
+ 11  	     , 201
+ 12  	     , 20
+ 13  	     );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO employees VALUES
+  2  	     ( 205
+  3  	     , 'Shelley'
+  4  	     , 'Higgins'
+  5  	     , 'SHIGGINS'
+  6  	     , '515.123.8080'
+  7  	     , TO_DATE('07-JUN-1994', 'dd-MON-yyyy')
+  8  	     , 'AC_MGR'
+  9  	     , 12000
+ 10  	     , NULL
+ 11  	     , 101
+ 12  	     , 110
+ 13  	     );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO employees VALUES
+  2  	     ( 206
+  3  	     , 'William'
+  4  	     , 'Gietz'
+  5  	     , 'WGIETZ'
+  6  	     , '515.123.8181'
+  7  	     , TO_DATE('07-JUN-1994', 'dd-MON-yyyy')
+  8  	     , 'AC_ACCOUNT'
+  9  	     , 8300
+ 10  	     , NULL
+ 11  	     , 205
+ 12  	     , 110
+ 13  	     );
+
+1 row created.
+
+SQL> 
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> 
+SQL> REM ***************************END OF insert data into the EMPLOYEES table
+SQL> 
+SQL> REM:9. Display firsy name, job id and salary of all the employees
+SQL> 
+SQL> SELECT first_name,job_id,salary
+  2  FROM employees;
+
+FIRST_NAME           JOB_ID         SALARY                                      
+-------------------- ---------- ----------                                      
+Steven               AD_PRES         24000                                      
+Neena                AD_VP           17000                                      
+Lex                  AD_VP           17000                                      
+Alexander            IT_PROG          9000                                      
+Bruce                IT_PROG          6000                                      
+David                IT_PROG          4800                                      
+Valli                IT_PROG          4800                                      
+Diana                IT_PROG          4200                                      
+Kevin                ST_MAN           5800                                      
+Trenna               ST_CLERK         3500                                      
+Curtis               ST_CLERK         3100                                      
+
+FIRST_NAME           JOB_ID         SALARY                                      
+-------------------- ---------- ----------                                      
+Randall              ST_CLERK         2600                                      
+Peter                ST_CLERK         2500                                      
+Eleni                SA_MAN          10500                                      
+Ellen                SA_REP          11000                                      
+Jonathon             SA_REP           8600                                      
+Kimberely            SA_REP           7000                                      
+Jennifer             AD_ASST          4400                                      
+Michael              MK_MAN          13000                                      
+Pat                  MK_REP           6000                                      
+Shelley              AC_MGR          12000                                      
+William              AC_ACCOUNT       8300                                      
+
+22 rows selected.
+
+SQL> 
+SQL> REM:10. Display the id, name(first & last), salary and annual salary of all REM:the employees.
+SQL> REM:Sort the employees by first name. Label the columns as shown below:
+SQL> REM:(EMPLOYEE_ID, FULL NAME, MONTHLY SAL, ANNUAL SALARY
+SQL> 
+SQL> select employee_id as "EMPLOYEE_ID",
+  2  CONCAT(first_name,last_name) as
+  3  "FULL NAME",
+  4  salary as "MONTHLY SAL",
+  5  salary*12 as "ANNUAL SALARY"
+  6  FROM employees
+  7  ORDER BY first_name;
+
+EMPLOYEE_ID FULL NAME                                     MONTHLY SAL           
+----------- --------------------------------------------- -----------           
+ANNUAL SALARY                                                                   
+-------------                                                                   
+        103 AlexanderHunold                                      9000           
+       108000                                                                   
+                                                                                
+        104 BruceErnst                                           6000           
+        72000                                                                   
+                                                                                
+        142 CurtisDavies                                         3100           
+        37200                                                                   
+                                                                                
+
+EMPLOYEE_ID FULL NAME                                     MONTHLY SAL           
+----------- --------------------------------------------- -----------           
+ANNUAL SALARY                                                                   
+-------------                                                                   
+        105 DavidAustin                                          4800           
+        57600                                                                   
+                                                                                
+        107 DianaLorentz                                         4200           
+        50400                                                                   
+                                                                                
+        149 EleniZlotkey                                        10500           
+       126000                                                                   
+                                                                                
+
+EMPLOYEE_ID FULL NAME                                     MONTHLY SAL           
+----------- --------------------------------------------- -----------           
+ANNUAL SALARY                                                                   
+-------------                                                                   
+        174 EllenAbel                                           11000           
+       132000                                                                   
+                                                                                
+        200 JenniferWhalen                                       4400           
+        52800                                                                   
+                                                                                
+        176 JonathonTaylor                                       8600           
+       103200                                                                   
+                                                                                
+
+EMPLOYEE_ID FULL NAME                                     MONTHLY SAL           
+----------- --------------------------------------------- -----------           
+ANNUAL SALARY                                                                   
+-------------                                                                   
+        124 KevinMourgos                                         5800           
+        69600                                                                   
+                                                                                
+        178 KimberelyGrant                                       7000           
+        84000                                                                   
+                                                                                
+        102 LexDe Haan                                          17000           
+       204000                                                                   
+                                                                                
+
+EMPLOYEE_ID FULL NAME                                     MONTHLY SAL           
+----------- --------------------------------------------- -----------           
+ANNUAL SALARY                                                                   
+-------------                                                                   
+        201 MichaelHartstein                                    13000           
+       156000                                                                   
+                                                                                
+        101 NeenaKochhar                                        17000           
+       204000                                                                   
+                                                                                
+        202 PatFay                                               6000           
+        72000                                                                   
+                                                                                
+
+EMPLOYEE_ID FULL NAME                                     MONTHLY SAL           
+----------- --------------------------------------------- -----------           
+ANNUAL SALARY                                                                   
+-------------                                                                   
+        144 PeterVargas                                          2500           
+        30000                                                                   
+                                                                                
+        143 RandallMatos                                         2600           
+        31200                                                                   
+                                                                                
+        205 ShelleyHiggins                                      12000           
+       144000                                                                   
+                                                                                
+
+EMPLOYEE_ID FULL NAME                                     MONTHLY SAL           
+----------- --------------------------------------------- -----------           
+ANNUAL SALARY                                                                   
+-------------                                                                   
+        100 StevenKing                                          24000           
+       288000                                                                   
+                                                                                
+        141 TrennaRajs                                           3500           
+        42000                                                                   
+                                                                                
+        106 ValliPataballa                                       4800           
+        57600                                                                   
+                                                                                
+
+EMPLOYEE_ID FULL NAME                                     MONTHLY SAL           
+----------- --------------------------------------------- -----------           
+ANNUAL SALARY                                                                   
+-------------                                                                   
+        206 WilliamGietz                                         8300           
+        99600                                                                   
+                                                                                
+
+22 rows selected.
+
+SQL> 
+SQL> REM:11. List the different jobs in which the employees are working for
+SQL> SELECT distinct job_id
+  2  FROM employees;
+
+JOB_ID                                                                          
+----------                                                                      
+IT_PROG                                                                         
+AC_MGR                                                                          
+AC_ACCOUNT                                                                      
+ST_MAN                                                                          
+AD_ASST                                                                         
+AD_VP                                                                           
+SA_MAN                                                                          
+MK_MAN                                                                          
+AD_PRES                                                                         
+SA_REP                                                                          
+MK_REP                                                                          
+
+JOB_ID                                                                          
+----------                                                                      
+ST_CLERK                                                                        
+
+12 rows selected.
+
+SQL> 
+SQL> REM:12. Display the id, first name, job id, salary and commission of REM:employees who are earning commissions.
+SQL> 
+SQL> SELECT employee_id
+  2  	     ,first_name,
+  3  	     job_id,
+  4  	     salary,
+  5  	     commission_pct
+  6  FROM employees
+  7  WHERE commission_pct is not NULL;
+
+EMPLOYEE_ID FIRST_NAME           JOB_ID         SALARY COMMISSION_PCT           
+----------- -------------------- ---------- ---------- --------------           
+        149 Eleni                SA_MAN          10500             .2           
+        174 Ellen                SA_REP          11000             .3           
+        176 Jonathon             SA_REP           8600             .2           
+        178 Kimberely            SA_REP           7000            .15           
+
+SQL> 
+SQL> REM:13. Display the details (id, first name, job id, salary and dept id) of REM:employees who are MANAGERS.
+SQL> 
+SQL> SELECT employee_id,first_name,job_id,salary,department_id
+  2  FROM employees
+  3  WHERE employee_id in (SELECT manager_id FROM employees);
+
+EMPLOYEE_ID FIRST_NAME           JOB_ID         SALARY DEPARTMENT_ID            
+----------- -------------------- ---------- ---------- -------------            
+        100 Steven               AD_PRES         24000            90            
+        102 Lex                  AD_VP           17000            90            
+        103 Alexander            IT_PROG          9000            60            
+        124 Kevin                ST_MAN           5800            50            
+        149 Eleni                SA_MAN          10500            80            
+        101 Neena                AD_VP           17000            90            
+        201 Michael              MK_MAN          13000            20            
+        205 Shelley              AC_MGR          12000           110            
+
+8 rows selected.
+
+SQL> 
+SQL> REM:14. Display the details of employees other than sales representatives REM:(id, first name, hire date, job id, salary and dept id) who are hired
+SQL> REM:after ‘01-May-1999’ or whose salary is at least 10000.
+SQL> 
+SQL> SELECT employee_id,first_name,hire_date,job_id,salary,department_id
+  2  FROM employees
+  3  WHERE job_id!='SA_REP' AND (hire_date>TO_DATE('01-MAY-1999', 'dd-MON-yyyy')OR salary>=10000);
+
+EMPLOYEE_ID FIRST_NAME           HIRE_DATE JOB_ID         SALARY DEPARTMENT_ID  
+----------- -------------------- --------- ---------- ---------- -------------  
+        100 Steven               17-JUN-87 AD_PRES         24000            90  
+        101 Neena                21-SEP-89 AD_VP           17000            90  
+        102 Lex                  13-JAN-93 AD_VP           17000            90  
+        124 Kevin                16-NOV-99 ST_MAN           5800            50  
+        149 Eleni                29-JAN-00 SA_MAN          10500            80  
+        201 Michael              17-FEB-96 MK_MAN          13000            20  
+        205 Shelley              07-JUN-94 AC_MGR          12000           110  
+
+7 rows selected.
+
+SQL> 
+SQL> 
+SQL> REM:15. Display the employee details (first name, salary, hire date and REM:dept id) whose
+SQL> REM:salary falls in the range of 5000 to 15000 and his/her name begins with REM:any of characters (A,J,K,S). Sort the output by first name.
+SQL> 
+SQL> SELECT first_name,salary,hire_date,department_id
+  2  FROM employees
+  3  WHERE salary BETWEEN 5000 AND 15000 AND (first_name LIKE 'A%' OR
+  4  first_name LIKE 'J%' OR first_name LIKE 'K%' OR
+  5  first_name LIKE ' S%')
+  6  ORDER BY first_name;
+
+FIRST_NAME               SALARY HIRE_DATE DEPARTMENT_ID                         
+-------------------- ---------- --------- -------------                         
+Alexander                  9000 03-JAN-90            60                         
+Jonathon                   8600 24-MAR-98            80                         
+Kevin                      5800 16-NOV-99            50                         
+Kimberely                  7000 24-MAY-99                                       
+
+SQL> 
+SQL> REM:16. Display the experience of employees in no. of years and months who REM:were hired after 1998. Label the columns as: (EMPLOYEE_ID,
+SQL> REM:FIRST_NAME, HIRE_DATE, EXP-YRS,EXP-MONTHS)
+SQL> 
+SQL> SELECT employee_id AS EMPLOYEE_ID,
+  2  	    first_name AS FIRST_NAME,
+  3  	    hire_date AS HIRE_DATE,
+  4  	    EXTRACT(YEAR FROM current_date) - EXTRACT(YEAR FROM hire_date) AS EXP_YRS,
+  5  	    ROUND(MONTHS_BETWEEN(current_date, hire_date)) AS EXP_MONTHS
+  6  FROM employees
+  7  WHERE hire_date>TO_DATE('01-JAN-1999', 'dd-MON-yyyy');
+
+EMPLOYEE_ID FIRST_NAME           HIRE_DATE    EXP_YRS EXP_MONTHS                
+----------- -------------------- --------- ---------- ----------                
+        107 Diana                07-FEB-99         24        297                
+        124 Kevin                16-NOV-99         24        288                
+        149 Eleni                29-JAN-00         23        285                
+        178 Kimberely            24-MAY-99         24        293                
+
+SQL> 
+SQL> REM:17. Display the total number of departments
+SQL> 
+SQL> SELECT COUNT(DISTINCT(department_id)) as TOTAL_DEPARTMENT
+  2  FROM employees;
+
+TOTAL_DEPARTMENT                                                                
+----------------                                                                
+               7                                                                
+
+SQL> 
+SQL> REM:18. Show the number of employees hired by year-wise. Sort the result by REM:year-wise.
+SQL> 
+SQL> SELECT EXTRACT(YEAR FROM hire_date) AS HIRE_YEAR,
+  2  	    COUNT(*) AS NUM_EMPLOYEES
+  3  FROM employees
+  4  GROUP BY EXTRACT(YEAR FROM hire_date)
+  5  ORDER BY EXTRACT(YEAR FROM hire_date);
+
+ HIRE_YEAR NUM_EMPLOYEES                                                        
+---------- -------------                                                        
+      1987             2                                                        
+      1989             1                                                        
+      1990             1                                                        
+      1991             1                                                        
+      1993             1                                                        
+      1994             2                                                        
+      1995             1                                                        
+      1996             2                                                        
+      1997             3                                                        
+      1998             4                                                        
+      1999             3                                                        
+
+ HIRE_YEAR NUM_EMPLOYEES                                                        
+---------- -------------                                                        
+      2000             1                                                        
+
+12 rows selected.
+
+SQL> 
+SQL> REM : 19. Display the minimum, maximum and average salary, number of employees for
+SQL> REM      each department. Exclude the employee(s) who are not in any department.
+SQL> REM      Include the department(s) with at least 2 employees and the average salary is
+SQL> REM      more than 10000. Sort the result by minimum salary in descending order.
+SQL> 
+SQL> SELECT department_id AS DEPT_ID,
+  2  	    MIN(salary) AS MIN_SALARY,
+  3  	    MAX(salary) AS MAX_SALARY,
+  4  	    AVG(salary) AS AVG_SALARY,
+  5  	    COUNT(*) AS NUM_EMPLOYEES
+  6  FROM employees
+  7  WHERE department_id IS NOT NULL
+  8  GROUP BY department_id
+  9  HAVING COUNT(*)>= 2 AND AVG(salary) > 10000
+ 10  ORDER BY MIN_SALARY DESC;
+
+   DEPT_ID MIN_SALARY MAX_SALARY AVG_SALARY NUM_EMPLOYEES                       
+---------- ---------- ---------- ---------- -------------                       
+        90      17000      24000 19333.3333             3                       
+        80       8600      11000 10033.3333             3                       
+       110       8300      12000      10150             2                       
+
+SQL> spool off
