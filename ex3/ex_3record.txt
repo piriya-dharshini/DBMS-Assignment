@@ -1,6 +1,6 @@
 SQL> set echo on;
 SQL> @"D:\sem-3\sql\ex3\pizzams_final.sql"
-SQL> REM:dropping tables
+SQL> REM:dropping tablessssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 SQL> drop table customer cascade constraints;
 
 Table dropped.
