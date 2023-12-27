@@ -54,7 +54,7 @@ insert into customer values('c006','Brinda','GST ROAD, TAMBARAM', 9876543210);
 insert into customer values('c007','Ramkumar','2nd cross street, Perambur',8566944453);
 
 
-REM CHANGE
+REM CHANGEssssssssssssssssssss
 REM pizza (pizza_id, pizza_type, unit_price)
 
 insert into pizza values('p001','pan',130);
